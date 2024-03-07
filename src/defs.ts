@@ -1,3 +1,5 @@
+import { Scene } from "babylonjs";
+
 export enum State {
     START,
     MAIN_MENU,
@@ -8,4 +10,9 @@ export enum State {
     GAME_MULTI,
     LOSE,
     WIN,
+};
+
+export type Status = {
+    scene: Scene | null,
+    state: State,
 };

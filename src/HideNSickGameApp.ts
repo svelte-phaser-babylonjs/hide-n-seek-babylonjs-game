@@ -1,25 +1,29 @@
-import * as B from 'babylonjs'
-import 'babylonjs-loaders';
-import { State } from './defs';
+import { State, Status } from './defs';
 import { start } from './states';
+import { Engine, Scene } from 'babylonjs';
+import 'babylonjs-loaders';
 
 export class HideNSickGameApp {
-    engine: B.Engine;
-    scene: B.Scene;
+    engine: Engine;
     state: State;
+
+    status: Status = {
+        scene: null,
+        state: State.START,
+    }
 
     protected start = start;
 
     constructor(readonly canvas: HTMLCanvasElement) {
         // create BabylonJS engine with anti-aliasing activated
-        this.engine = new B.Engine(canvas, true)
+        this.engine = new Engine(canvas, true)
 
         window.addEventListener('resize', () => {
             this.engine.resize();
         });
 
         // create the scene
-        this.scene = new B.Scene(this.engine);
+        this.status.scene = new Scene(this.engine);
 
         // state
         this.state = State.START;
@@ -27,9 +31,9 @@ export class HideNSickGameApp {
 
     debug(debugOn: boolean = true) {
         if (debugOn) {
-            this.scene.debugLayer.show({ overlay: true });
+            this.status.scene!.debugLayer.show({ overlay: true });
         } else {
-            this.scene.debugLayer.hide();
+            this.status.scene!.debugLayer.hide();
         }
     }
 
@@ -42,7 +46,7 @@ export class HideNSickGameApp {
         this.engine.runRenderLoop(() => {
             switch (this.state) {
                 case State.START:
-                    this.scene.render();
+                    this.status.scene!.render();
                     break;
 
                 case State.MAIN_MENU:

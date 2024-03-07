@@ -17,6 +17,7 @@
     },
     "dependencies": {
         "babylonjs": "^6.46.0",
+        "babylonjs-gui": "^6.46.0",
         "babylonjs-loaders": "^6.46.0"
     }
 }
