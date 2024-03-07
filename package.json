@@ -1,6 +1,7 @@
 {
-    "name": "friends",
-    "version": "0.0.0",
+    "name": "hideandseek",
+    "version": "1.0.0-alpha",
+    "description": "2.5d exploration game",
     "scripts": {
         "dev": "vite --open",
         "build": "tsc && vite build",
