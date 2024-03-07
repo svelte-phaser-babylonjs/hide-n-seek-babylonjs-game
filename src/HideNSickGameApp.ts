@@ -1,9 +1,14 @@
 import * as B from 'babylonjs'
 import 'babylonjs-loaders';
+import { State } from './defs';
+import { start } from './states';
 
 export class HideNSickGameApp {
-    private engine: B.Engine;
-    private scene: B.Scene;
+    engine: B.Engine;
+    scene: B.Scene;
+    state: State;
+
+    protected start = start;
 
     constructor(readonly canvas: HTMLCanvasElement) {
         // create BabylonJS engine with anti-aliasing activated
@@ -14,7 +19,10 @@ export class HideNSickGameApp {
         });
 
         // create the scene
-        this.scene = createScene(this.engine, this.canvas)
+        this.scene = new B.Scene(this.engine);
+
+        // state
+        this.state = State.START;
     }
 
     debug(debugOn: boolean = true) {
@@ -28,34 +36,42 @@ export class HideNSickGameApp {
     run() {
         this.debug(true);
 
+        this.start();
+
         // running render loop
         this.engine.runRenderLoop(() => {
-            this.scene.render();
+            switch (this.state) {
+                case State.START:
+                    this.scene.render();
+                    break;
+
+                case State.MAIN_MENU:
+                    break;
+
+                case State.SOLO_MENU:
+                    break;
+
+                case State.MULTI_MENU:
+                    break;
+
+                case State.OPTIONS:
+                    break;
+
+                case State.GAME_SOLO:
+                    break;
+
+                case State.GAME_MULTI:
+                    break;
+
+                case State.LOSE:
+                    break;
+
+                case State.WIN:
+                    break;
+
+                default:
+                    break;
+            }
         });
     }
 }
-
-const createCamera = function (scene: B.Scene) {
-    const camera = new B.ArcRotateCamera('camera', Math.PI, Math.PI, 1, B.Vector3.Zero(), scene);
-
-    camera.attachControl(true);
-
-    return camera;
-}
-
-const createLight = function (scene: B.Scene) {
-    const light = new B.HemisphericLight('light', new B.Vector3(0, 1, 0), scene);
-    return light;
-}
-
-
-const createScene = function (engine: B.Engine, canvas: HTMLCanvasElement) {
-    // This creates a basic Babylon Scene object (non-mesh)
-    const scene = new B.Scene(engine);
-
-    createCamera(scene);
-
-    createLight(scene);
-
-    return scene;
-};
