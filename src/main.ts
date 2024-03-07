@@ -1,4 +1,4 @@
-import { TemplateApp as App } from './TemplateApp';
+import { HideNSickGameApp as App } from './HideNSickGameApp';
 
 console.log(`main.ts starting ${App.name}`);
 window.addEventListener('DOMContentLoaded', () => {

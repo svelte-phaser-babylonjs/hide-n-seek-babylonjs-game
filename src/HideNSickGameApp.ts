@@ -1,13 +1,13 @@
-import * as BABYLON from 'babylonjs'
+import * as B from 'babylonjs'
 import 'babylonjs-loaders';
 
-export class TemplateApp {
-    engine: BABYLON.Engine;
-    scene: BABYLON.Scene;
+export class HideNSickGameApp {
+    private engine: B.Engine;
+    private scene: B.Scene;
 
     constructor(readonly canvas: HTMLCanvasElement) {
         // create BabylonJS engine with anti-aliasing activated
-        this.engine = new BABYLON.Engine(canvas, true)
+        this.engine = new B.Engine(canvas, true)
 
         window.addEventListener('resize', () => {
             this.engine.resize();
@@ -35,20 +35,23 @@ export class TemplateApp {
     }
 }
 
-const createCamera = function (scene: BABYLON.Scene) {
-    const camera = new BABYLON.FreeCamera('camera', BABYLON.Vector3.Zero(), scene);
+const createCamera = function (scene: B.Scene) {
+    const camera = new B.ArcRotateCamera('camera', Math.PI, Math.PI, 1, B.Vector3.Zero(), scene);
+
+    camera.attachControl(true);
+
     return camera;
 }
 
-const createLight = function (scene: BABYLON.Scene) {
-    const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 0), scene);
+const createLight = function (scene: B.Scene) {
+    const light = new B.HemisphericLight('light', new B.Vector3(0, 1, 0), scene);
     return light;
 }
 
 
-const createScene = function (engine: BABYLON.Engine, canvas: HTMLCanvasElement) {
+const createScene = function (engine: B.Engine, canvas: HTMLCanvasElement) {
     // This creates a basic Babylon Scene object (non-mesh)
-    const scene = new BABYLON.Scene(engine);
+    const scene = new B.Scene(engine);
 
     createCamera(scene);
 
