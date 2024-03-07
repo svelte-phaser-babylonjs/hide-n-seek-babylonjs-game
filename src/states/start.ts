@@ -31,15 +31,6 @@ const createLogo = function (container: AdvancedDynamicTexture) {
 
 const createPlayButton = function (container: AdvancedDynamicTexture) {
     const playBtn = Button.CreateSimpleButton('play-btn', "Play");
-    playBtn.color = "white";
-    document.fonts.load('14px bongkar').then(() => {  // start loading font
-        document.fonts.ready.then(() => {
-            console.log('Fonts Ready');  // all fonts is ready
-            playBtn.fontFamily = "bongkar";
-        });
-    });
-
-    playBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * 0.05;
 
     playBtn.height = 0.12;
     playBtn.width = 0.24;
@@ -60,6 +51,14 @@ const createPlayButton = function (container: AdvancedDynamicTexture) {
         // change the scene to main menu
     });
 
+    playBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * 0.05;
+    playBtn.color = "white";
+    document.fonts.load('14px bongkar').then(() => {  // start loading font
+        document.fonts.ready.then(() => {
+            console.log('Fonts Ready');  // all fonts is ready
+            playBtn.fontFamily = "bongkar";
+        });
+    });
     container.addControl(playBtn);
 
     return playBtn;
