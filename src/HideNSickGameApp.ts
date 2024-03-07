@@ -38,7 +38,7 @@ export class HideNSickGameApp {
     }
 
     run() {
-        this.debug(true);
+        this.debug(false);
 
         this.start();
 
