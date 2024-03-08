@@ -1,4 +1,4 @@
-import { AssetsManager, Engine, Scene, Sprite, SpriteManager, SpriteMap, SpritePackedManager, StandardMaterial, Texture, Vector2, Vector3 } from "babylonjs";
+import { AssetsManager, Engine, Mesh, MeshBuilder, Scene, Sprite, SpriteManager, SpriteMap, SpritePackedManager, StandardMaterial, Texture, Vector2, Vector3 } from "babylonjs";
 
 export async function spriteRandomGenerator(
     scene: Scene,
@@ -144,4 +144,45 @@ export async function animatedStandardMaterial(
     animatedMat.useAlphaFromDiffuseTexture = true;
 
     return animatedMat;
+}
+
+export async function spriteMeshGenerator(
+    scene: Scene,
+    texture: Texture,
+    material: StandardMaterial,
+    spriteMeshName: string,
+    min: number,
+    max: number,
+    zPos: number,
+    scalingX: number,
+    scalingY: number,
+    qty: number
+) {
+    for (let i = 1; i < qty; ++i) {
+        const randomPosX = Math.random() * (max - min) + min;
+        const randomPosY = Math.random() * (max - min) + min;
+
+        const spriteMesh = MeshBuilder.CreatePlane(`${spriteMeshName}-${i}`, {
+            width: 1,
+            height: 1,
+            sideOrientation: Mesh.DOUBLESIDE
+        }, scene);
+
+        spriteMesh.position.x = randomPosX;
+        spriteMesh.position.y = randomPosY;
+        spriteMesh.position.z = zPos;
+
+        spriteMesh.rotation.x = -45;
+
+        spriteMesh.scaling.x = scalingX;
+        spriteMesh.scaling.y = scalingY;
+
+        material.diffuseTexture = texture;
+        material.diffuseTexture.hasAlpha = true;
+        material.emissiveTexture = texture;
+        material.emissiveTexture.hasAlpha = true;
+        material.useAlphaFromDiffuseTexture = true;
+
+        spriteMesh.material = material;
+    }
 }
