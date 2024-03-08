@@ -92,14 +92,6 @@ async function createGUI(this: Game, scene: Scene) {
 
     createBackground(guiMenu);
 
-    const backBtn = await simpleButton('back-btn', '< Back', fontSizePercentage / 1.5, 0.1, (0.4 * window.innerHeight), Control.VERTICAL_ALIGNMENT_TOP);
-    backBtn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
-    backBtn.leftInPixels = -80;
-    backBtn.onPointerClickObservable.add(() => {
-        this.gotoMainMenu();
-    });
-    guiMenu.addControl(backBtn);
-
     const soloTitle = await simpleTextBlock("solo-title", "Choose your level", "white", fontSizePercentage, 0.1, (window.innerHeight / 20), Control.VERTICAL_ALIGNMENT_TOP);
     guiMenu.addControl(soloTitle);
 
@@ -120,6 +112,14 @@ async function createGUI(this: Game, scene: Scene) {
         containerGrid.isVisible = true;
     });
     scrollViewer.addControl(level1Btn);
+
+    const backBtn = await simpleButton('back-btn', '> Back', fontSizePercentage / 1.5, 0.1, (0.4 * window.innerHeight), Control.VERTICAL_ALIGNMENT_TOP);
+    backBtn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+    backBtn.leftInPixels = -80;
+    backBtn.onPointerClickObservable.add(() => {
+        this.gotoMainMenu();
+    });
+    guiMenu.addControl(backBtn);
 
     window.addEventListener("resize", () => {
         soloTitle.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * fontSizePercentage;
