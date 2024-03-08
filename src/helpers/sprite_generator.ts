@@ -14,7 +14,7 @@ export async function spriteRandomGenerator(
     spriteHeight: number,
     isAnimated = false as boolean,
     numberOfFrames?: number
-): Promise<void> {
+) {
     const spriteManager = new SpriteManager(
         `${name}Manager`,
         spriteUrl,
@@ -50,7 +50,7 @@ export async function spritePackRandomGenerator(
     zPos: number,
     spriteWidth: number,
     spriteHeight: number
-): Promise<void> {
+) {
     for (let i = 1; i < qty; ++i) {
         const randomPosX = Math.random() * (max - min) + min;
         const randomPosY = Math.random() * (max - min) + min;

@@ -135,7 +135,7 @@ async function createGUI(this: Game, scene: Scene) {
 }
 
 export default async function (this: Game) {
-    this.uiScene!.detachControl();
+    this.scene!.detachControl();
     this.engine.displayLoadingUI();
 
     const sceneToLoad = new Scene(this.engine);
@@ -145,10 +145,10 @@ export default async function (this: Game) {
 
     await createGUI.call(this, sceneToLoad);
 
-    await this.uiScene!.whenReadyAsync();
+    await this.scene!.whenReadyAsync();
 
     sceneToLoad.attachControl();
     this.engine.hideLoadingUI();
-    this.uiScene!.dispose();
-    this.uiScene = sceneToLoad;
+    this.scene!.dispose();
+    this.scene = sceneToLoad;
 }

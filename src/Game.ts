@@ -1,18 +1,20 @@
 import { mainMenu, soloMenu, start } from './states';
 import { Engine, Scene } from 'babylonjs';
 import 'babylonjs-loaders';
+import { disposeLevel1, initLevel1, level1 } from './states/level1';
 
 export class Game {
     engine: Engine;
 
-    uiScene: Scene | null = null;
-
-    protected gameScene: Scene | null = null;
+    scene: Scene | null = null;
 
     // states
     protected gotoStart = start;
     protected gotoMainMenu = mainMenu;
     protected gotoSoloMenu = soloMenu;
+    protected gotoLevel1 = level1;
+    protected setupLevel1 = initLevel1;
+    protected removeLevel1 = disposeLevel1;
 
     constructor(readonly canvas: HTMLCanvasElement) {
         // create BabylonJS engine with anti-aliasing activated
@@ -23,15 +25,15 @@ export class Game {
         });
 
         // create the scene
-        this.uiScene = new Scene(this.engine);
+        this.scene = new Scene(this.engine);
     }
 
-    async run(): Promise<void> {
+    async run() {
         await this.gotoStart();
 
         // running render loop
         this.engine.runRenderLoop(() => {
-            this.uiScene!.render();
+            this.scene!.render();
         });
     }
 }

@@ -21,7 +21,7 @@ const createBackground = function (container: AdvancedDynamicTexture) {
     return bg;
 }
 
-async function createModal(container: AdvancedDynamicTexture) {
+async function createModal(this: Game, container: AdvancedDynamicTexture) {
     const containerGrid = new Rectangle('grid-container');
     containerGrid.isVisible = false;
     containerGrid.background = "#64B1A2";
@@ -41,9 +41,11 @@ async function createModal(container: AdvancedDynamicTexture) {
     modal.alpha = 0.3;
     modal.isVisible = false;
 
-    modal.onPointerClickObservable.add(() => {
+    modal.onPointerClickObservable.add(async () => {
         containerGrid.isVisible = false;
         modal.isVisible = false;
+
+        await this.removeLevel1();
     });
     container.addControl(modal);
 
@@ -72,8 +74,9 @@ async function createModal(container: AdvancedDynamicTexture) {
     grid.addControl(timeText, 1, 0);
 
     const startBtn = await simpleButton("start-btn", "Start", fontSizePercentage, 1, 1, Control.VERTICAL_ALIGNMENT_CENTER);
-    startBtn.onPointerClickObservable.add(() => {
+    startBtn.onPointerClickObservable.add(async () => {
         // launch level 1
+        await this.gotoLevel1();
     });
     grid.addControl(startBtn, 1, 1);
 
@@ -94,7 +97,7 @@ async function createGUI(this: Game, scene: Scene) {
     const soloTitle = await simpleTextBlock("solo-title", "Choose your level", "white", fontSizePercentage, 0.1, (window.innerHeight / 20), Control.VERTICAL_ALIGNMENT_TOP);
     guiMenu.addControl(soloTitle);
 
-    const { modal, containerGrid } = await createModal(guiMenu);
+    const { modal, containerGrid } = await createModal.call(this, guiMenu);
 
     const scrollViewer = new ScrollViewer("scroll-viewer-solo");
     scrollViewer.background = "#64B1A2";
@@ -106,9 +109,11 @@ async function createGUI(this: Game, scene: Scene) {
     guiMenu.addControl(scrollViewer);
 
     const level1Btn = await imageButton("level1-btn", "The Rabbit Invasion", "assets/textures/UI/level1.svg", fontSizePercentage / 2, 0.3, 0, Control.HORIZONTAL_ALIGNMENT_LEFT);
-    level1Btn.onPointerClickObservable.add(() => {
+    level1Btn.onPointerClickObservable.add(async () => {
         modal.isVisible = true;
         containerGrid.isVisible = true;
+
+        await this.setupLevel1();
     });
     scrollViewer.addControl(level1Btn);
 
@@ -128,7 +133,7 @@ async function createGUI(this: Game, scene: Scene) {
 }
 
 export default async function (this: Game) {
-    this.uiScene!.detachControl();
+    this.scene!.detachControl();
     this.engine.displayLoadingUI();
 
     const sceneToLoad = new Scene(this.engine);
@@ -136,11 +141,11 @@ export default async function (this: Game) {
     createCamera(sceneToLoad);
     await createGUI.call(this, sceneToLoad);
 
-    await this.uiScene!.whenReadyAsync();
+    await this.scene!.whenReadyAsync();
 
     sceneToLoad.attachControl();
     this.engine.hideLoadingUI();
-    this.uiScene!.dispose();
-    this.uiScene = sceneToLoad;
+    this.scene!.dispose();
+    this.scene = sceneToLoad;
 
 }
