@@ -1,19 +1,27 @@
-import { DirectionalLight, FreeCamera, Mesh, MeshBuilder, Scene, SpritePackedManager, Vector2, Vector3 } from "babylonjs";
+import { AbstractMesh, Animation, DirectionalLight, FollowCamera, Mesh, MeshBuilder, Scene, SpritePackedManager, Vector2, Vector3 } from "babylonjs";
 import { Game } from "../Game";
 import { State } from "../defs";
 import { AdvancedDynamicTexture, Control, Image } from "babylonjs-gui";
 import { simpleButton } from "../helpers/gui_generator";
 import { animatedStandardMaterial, spriteMapGenerator, spritePackRandomGenerator, spriteRandomGenerator } from "../helpers/sprite_generator";
 
-const createCamera = function (scene: Scene) {
-    const camera = new FreeCamera('camera', Vector3.Zero(), scene);
+const createCameraAndLight = function (scene: Scene, target: AbstractMesh) {
+    const light = new DirectionalLight("light", new Vector3(0, 1, 1), scene);
+    light.intensity = 0.4;
 
-    camera.attachControl(true);
+    const camera = new FollowCamera('follow-camera', new Vector3(0, -3, -10), scene);
+
+    camera.radius = -4;
+    camera.heightOffset = -4;
+    camera.rotation.x = -45;
+    camera.cameraAcceleration = 0.1;
+    camera.noRotationConstraint = true;
+    camera.lockedTarget = target;
 
     return camera;
 }
 
-async function createTheAnimatedBG(scene: Scene) {
+async function createTheAnimatedBGAndPlayerMesh(scene: Scene) {
     const min = -15;
     const max = 15;
 
@@ -51,6 +59,35 @@ async function createTheAnimatedBG(scene: Scene) {
     playerMesh.setParent(parentMesh);
 
     playerMesh.material = await animatedStandardMaterial(scene, "assets/sprites/character/character1_moving_left.png", "character-mat", 8, 1, 120);
+
+    const animPlayer = new Animation("playerRotationAnimation", "rotationQuaternion", 60, Animation.ANIMATIONTYPE_QUATERNION, Animation.ANIMATIONLOOPMODE_CYCLE);
+    const initialRotationQuaternion = new Vector3(-45, 0, 0).toQuaternion();
+    const rotationQuaternionReversed = new Vector3(45, 135, 0).toQuaternion();
+
+    const anim1 = [
+        { frame: 0, value: initialRotationQuaternion }, { frame: 360, value: initialRotationQuaternion },
+        { frame: 361, value: rotationQuaternionReversed }, { frame: 900, value: rotationQuaternionReversed },
+        { frame: 901, value: initialRotationQuaternion }, { frame: 2500, value: initialRotationQuaternion },
+        { frame: 2501, value: rotationQuaternionReversed }, { frame: 3200, value: rotationQuaternionReversed },
+    ];
+
+    animPlayer.setKeys(anim1);
+
+    playerMesh.animations = [];
+    playerMesh.animations.push(animPlayer);
+
+    scene.beginAnimation(playerMesh, 0, 3400, true);
+
+    parentMesh.animations = [];
+
+    let animationsPosition = await Animation.ParseFromFileAsync("playerPositionAnimation", "assets/animations/main_menu_player_animation.json");
+    (animationsPosition as Animation[]).forEach(animation => {
+        parentMesh.animations.push(animation);
+    });
+
+    scene.beginDirectAnimation(parentMesh, parentMesh.animations, 0, 3400, true);
+
+    return parentMesh;
 }
 
 const createLogo = function (container: AdvancedDynamicTexture) {
@@ -104,12 +141,10 @@ export default async function (this: Game) {
     this.engine.displayLoadingUI();
 
     const sceneToLoad = new Scene(this.engine);
-    createCamera(sceneToLoad);
 
-    const light = new DirectionalLight("light", new Vector3(0, 1, 1), sceneToLoad);
-    light.intensity = 0.4;
+    const playerParentMesh = await createTheAnimatedBGAndPlayerMesh(sceneToLoad);
+    createCameraAndLight(sceneToLoad, playerParentMesh);
 
-    await createTheAnimatedBG(sceneToLoad);
     await createGUI.call(this, sceneToLoad);
 
     await this.status.scene!.whenReadyAsync();

@@ -94,6 +94,9 @@ export async function spriteMapGenerator(
         }, scene);
 
         spriteMap.loadTileMaps(titleMapFileUrl);
+
+        const spriteMapObj: any = scene.getNodeByName("sprite-map:output");
+        spriteMapObj!.alphaIndex = 0;
     }
 
     assetsManager.loadAsync();
