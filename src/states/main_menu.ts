@@ -136,6 +136,7 @@ async function createGUI(this: Game, scene: Scene) {
 }
 
 export default async function (this: Game) {
+    this.status.state = State.MAIN_MENU;
     this.status.scene!.detachControl();
     this.engine.displayLoadingUI();
 
@@ -152,6 +153,4 @@ export default async function (this: Game) {
     this.engine.hideLoadingUI();
     this.status.scene!.dispose();
     this.status.scene = sceneToLoad;
-
-    this.state = State.MAIN_MENU;
 }

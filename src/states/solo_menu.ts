@@ -2,7 +2,7 @@ import { ArcRotateCamera, Scene, Vector3 } from "babylonjs";
 import { Game } from "../Game";
 import { State } from "../defs";
 import { AdvancedDynamicTexture, Control, Grid, Image, Rectangle, ScrollViewer } from "babylonjs-gui";
-import { imageButton, simpleButton, simpleTextBlock } from "../helpers/gui_generator";
+import { imageButton, simpleTextBlock } from "../helpers/gui_generator";
 
 const createCamera = function (scene: Scene) {
     const camera = new ArcRotateCamera('camera', Math.PI, Math.PI, 1, Vector3.Zero(), scene);
@@ -18,19 +18,6 @@ const createBackground = function (container: AdvancedDynamicTexture) {
     container.addControl(bg);
 
     return bg;
-}
-
-const createLogo = function (container: AdvancedDynamicTexture) {
-    const titleImg = new Image('logo-title', 'assets/textures/UI/logo.svg');
-
-    titleImg.stretch = Image.STRETCH_UNIFORM;
-    titleImg.height = 0.3;
-    titleImg.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
-    titleImg.top = (window.innerHeight / 10);
-
-    container.addControl(titleImg);
-
-    return titleImg;
 }
 
 async function createGUI(this: Game, scene: Scene) {
@@ -96,6 +83,7 @@ async function createGUI(this: Game, scene: Scene) {
 }
 
 export default async function (this: Game) {
+    this.status.state = State.SOLO_MENU;
     this.status.scene!.detachControl();
     this.engine.displayLoadingUI();
 
@@ -111,5 +99,4 @@ export default async function (this: Game) {
     this.status.scene!.dispose();
     this.status.scene = sceneToLoad;
 
-    this.state = State.SOLO_MENU;
 }
