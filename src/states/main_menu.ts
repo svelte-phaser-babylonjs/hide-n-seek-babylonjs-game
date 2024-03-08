@@ -110,7 +110,7 @@ async function createGUI(this: Game, scene: Scene) {
 
     const soloBtn = await simpleButton('solo-btn', 'Solo', fontSizePercentage, 0.12, 0.15, -((window.innerHeight / 20) * 6), Control.VERTICAL_ALIGNMENT_BOTTOM);
     soloBtn.onPointerClickObservable.add(() => {
-
+        this.gotoSoloMenu();
     });
     guiMenu.addControl(soloBtn);
 
@@ -153,5 +153,5 @@ export default async function (this: Game) {
     this.status.scene!.dispose();
     this.status.scene = sceneToLoad;
 
-    this.state = State.START;
+    this.state = State.MAIN_MENU;
 }

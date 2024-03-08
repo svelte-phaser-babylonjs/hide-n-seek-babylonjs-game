@@ -84,7 +84,7 @@ const createGUI = async function (this: Game, scene: Scene) {
     const playBtn = await createPlayButton(guiMenu);
     playBtn.onPointerClickObservable.add(() => {
         // change the scene to main menu
-        this.goToMainMenu();
+        this.gotoMainMenu();
     });
 }
 

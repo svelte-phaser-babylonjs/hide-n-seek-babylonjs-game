@@ -1,5 +1,5 @@
 import { State, Status } from './defs';
-import { mainMenu, start } from './states';
+import { mainMenu, soloMenu, start } from './states';
 import { Engine, Scene } from 'babylonjs';
 import 'babylonjs-loaders';
 
@@ -13,8 +13,9 @@ export class Game {
     }
 
     // states
-    protected start = start;
-    protected mainMenu = mainMenu;
+    protected gotoStart = start;
+    protected gotoMainMenu = mainMenu;
+    protected gotoSoloMenu = soloMenu;
 
     constructor(readonly canvas: HTMLCanvasElement) {
         // create BabylonJS engine with anti-aliasing activated
@@ -32,50 +33,42 @@ export class Game {
     }
 
     async run(): Promise<void> {
-        await this.goToStart();
+        await this.gotoStart();
 
         // running render loop
         this.engine.runRenderLoop(() => {
-            switch (this.state) {
-                case State.START:
-                    this.status.scene!.render();
-                    break;
+            this.status.scene!.render();
+            // switch (this.state) {
+            //     case State.START:
+            //         break;
 
-                case State.MAIN_MENU:
-                    break;
+            //     case State.MAIN_MENU:
+            //         break;
 
-                case State.SOLO_MENU:
-                    break;
+            //     case State.SOLO_MENU:
+            //         break;
 
-                case State.MULTI_MENU:
-                    break;
+            //     case State.MULTI_MENU:
+            //         break;
 
-                case State.OPTIONS:
-                    break;
+            //     case State.OPTIONS:
+            //         break;
 
-                case State.GAME_SOLO:
-                    break;
+            //     case State.GAME_SOLO:
+            //         break;
 
-                case State.GAME_MULTI:
-                    break;
+            //     case State.GAME_MULTI:
+            //         break;
 
-                case State.LOSE:
-                    break;
+            //     case State.LOSE:
+            //         break;
 
-                case State.WIN:
-                    break;
+            //     case State.WIN:
+            //         break;
 
-                default:
-                    break;
-            }
+            //     default:
+            //         break;
+            // }
         });
-    }
-
-    protected async goToStart(): Promise<void> {
-        await this.start();
-    }
-
-    protected async goToMainMenu(): Promise<void> {
-        await this.mainMenu();
     }
 }
