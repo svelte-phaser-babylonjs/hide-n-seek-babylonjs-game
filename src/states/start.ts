@@ -1,4 +1,4 @@
-import { HideNSickGameApp } from "../HideNSickGameApp";
+import { Game as Game } from "../Game";
 import { ArcRotateCamera, Scene, Vector3 } from "babylonjs";
 import { AdvancedDynamicTexture, Button, Control, Image, Rectangle } from 'babylonjs-gui';
 import { useFont as changeControlFont } from "../utils";
@@ -95,7 +95,7 @@ const createTheAnimatedImage = function (container: AdvancedDynamicTexture) {
     return animImg;
 }
 
-export default async function (this: HideNSickGameApp) {
+export default async function (this: Game) {
 
     this.status.scene!.detachControl();
     this.engine.displayLoadingUI();

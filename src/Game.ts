@@ -3,7 +3,7 @@ import { start } from './states';
 import { Engine, Scene } from 'babylonjs';
 import 'babylonjs-loaders';
 
-export class HideNSickGameApp {
+export class Game {
     engine: Engine;
     state: State;
 

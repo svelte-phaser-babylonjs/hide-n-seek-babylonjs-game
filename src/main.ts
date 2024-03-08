@@ -1,4 +1,4 @@
-import { HideNSickGameApp as App } from './HideNSickGameApp';
+import { Game as App } from './Game';
 import './fonts.css';
 
 console.log(`main.ts starting ${App.name}`);
