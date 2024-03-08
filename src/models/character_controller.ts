@@ -1,8 +1,16 @@
-import { AbstractMesh, DirectionalLight, FollowCamera, Mesh, MeshBuilder, Scene, Vector3 } from "babylonjs";
+import { DirectionalLight, FollowCamera, Mesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from "babylonjs";
 import { animatedStandardMaterial } from "../helpers/sprite_generator";
 import { InputController } from ".";
 
-const CHARACTER_SPEED: number = 12;
+const CHARACTER_SPEED: number = 10;
+
+type CharacterAnimations = {
+    watching: StandardMaterial | null,
+    moving_left: StandardMaterial | null,
+    moving_right: StandardMaterial | null,
+    moving_up: StandardMaterial | null,
+    moving_down: StandardMaterial | null,
+};
 
 export default class {
     private scene: Scene;
@@ -16,17 +24,41 @@ export default class {
     private direction: Vector3 = new Vector3();
     private inputAmt!: number;
 
+    // Character animation components
+    private animations: CharacterAnimations = {
+        watching: null,
+        moving_left: null,
+        moving_right: null,
+        moving_up: null,
+        moving_down: null,
+    };
+
     constructor(scene: Scene) {
         this.scene = scene;
 
         this.input = new InputController(scene);
 
+        this.setupCharacterAnimations();
         this.setupCharacterMesh();
         this.setupCharacterCamera();
 
         this.scene.registerBeforeRender(() => {
             this.updateFromControls();
+            this.updateCharacterAnimations();
         });
+    }
+
+    private async setupCharacterAnimations() {
+        for (const key of Object.keys(this.animations)) {
+            this.animations[key as keyof CharacterAnimations] = await animatedStandardMaterial(
+                this.scene,
+                `assets/sprites/character/character1_${key}.png`,
+                `character1-${key}-mat`,
+                8,
+                1,
+                160
+            );
+        }
     }
 
     private async setupCharacterMesh() {
@@ -39,14 +71,7 @@ export default class {
         this.mesh.position.z = -0.4;
         this.mesh.rotation.x = -45;
 
-        this.mesh.material = await animatedStandardMaterial(
-            this.scene,
-            "assets/sprites/character/character1_watching.png",
-            "character-mat",
-            8,
-            1,
-            160
-        );
+        this.mesh.material = this.animations.watching;
     }
 
     private async setupCharacterCamera() {
@@ -87,6 +112,24 @@ export default class {
 
         if (this.mesh) {
             this.mesh.moveWithCollisions(this.direction);
+        }
+    }
+
+    private updateCharacterAnimations() {
+        if (this.direction.x === 0 && this.direction.y === 0) {
+            this.mesh.material = this.animations.watching;
+        }
+        else if (this.direction.y > 0) {
+            this.mesh.material = this.animations.moving_up;
+        }
+        else if (this.direction.y < 0) {
+            this.mesh.material = this.animations.moving_down;
+        }
+        else if (this.direction.x > 0) {
+            this.mesh.material = this.animations.moving_right;
+        }
+        else if (this.direction.x < 0) {
+            this.mesh.material = this.animations.moving_left;
         }
     }
 }
