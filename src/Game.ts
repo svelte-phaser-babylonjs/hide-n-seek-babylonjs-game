@@ -1,4 +1,3 @@
-import { State, Status } from './defs';
 import { mainMenu, soloMenu, start } from './states';
 import { Engine, Scene } from 'babylonjs';
 import 'babylonjs-loaders';
@@ -6,10 +5,9 @@ import 'babylonjs-loaders';
 export class Game {
     engine: Engine;
 
-    status: Status = {
-        scene: null,
-        state: State.START,
-    }
+    uiScene: Scene | null = null;
+
+    protected gameScene: Scene | null = null;
 
     // states
     protected gotoStart = start;
@@ -25,7 +23,7 @@ export class Game {
         });
 
         // create the scene
-        this.status.scene = new Scene(this.engine);
+        this.uiScene = new Scene(this.engine);
     }
 
     async run(): Promise<void> {
@@ -33,7 +31,7 @@ export class Game {
 
         // running render loop
         this.engine.runRenderLoop(() => {
-            this.status.scene!.render();
+            this.uiScene!.render();
         });
     }
 }

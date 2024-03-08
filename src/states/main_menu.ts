@@ -1,6 +1,5 @@
 import { AbstractMesh, Animation, DirectionalLight, FollowCamera, Mesh, MeshBuilder, Scene, SpritePackedManager, Vector2, Vector3 } from "babylonjs";
 import { Game } from "../Game";
-import { State } from "../defs";
 import { AdvancedDynamicTexture, Control, Image } from "babylonjs-gui";
 import { simpleButton } from "../helpers/gui_generator";
 import { animatedStandardMaterial, spriteMapGenerator, spritePackRandomGenerator, spriteRandomGenerator } from "../helpers/sprite_generator";
@@ -136,8 +135,7 @@ async function createGUI(this: Game, scene: Scene) {
 }
 
 export default async function (this: Game) {
-    this.status.state = State.MAIN_MENU;
-    this.status.scene!.detachControl();
+    this.uiScene!.detachControl();
     this.engine.displayLoadingUI();
 
     const sceneToLoad = new Scene(this.engine);
@@ -147,10 +145,10 @@ export default async function (this: Game) {
 
     await createGUI.call(this, sceneToLoad);
 
-    await this.status.scene!.whenReadyAsync();
+    await this.uiScene!.whenReadyAsync();
 
     sceneToLoad.attachControl();
     this.engine.hideLoadingUI();
-    this.status.scene!.dispose();
-    this.status.scene = sceneToLoad;
+    this.uiScene!.dispose();
+    this.uiScene = sceneToLoad;
 }

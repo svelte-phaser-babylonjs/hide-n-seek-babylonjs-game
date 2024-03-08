@@ -1,7 +1,6 @@
 import { Game as Game } from "../Game";
 import { ArcRotateCamera, Scene, Vector3 } from "babylonjs";
 import { AdvancedDynamicTexture, Control, Image, Rectangle } from 'babylonjs-gui';
-import { State } from "../defs";
 import { simpleButton } from "../helpers/gui_generator";
 
 const createCamera = function (scene: Scene) {
@@ -89,18 +88,17 @@ const createGUI = async function (this: Game, scene: Scene) {
 }
 
 export default async function (this: Game) {
-    this.status.state = State.START;
-    this.status.scene!.detachControl();
+    this.uiScene!.detachControl();
     this.engine.displayLoadingUI();
 
     const sceneToLoad = new Scene(this.engine);
 
     await createGUI.call(this, sceneToLoad);
 
-    await this.status.scene!.whenReadyAsync();
+    await this.uiScene!.whenReadyAsync();
 
     sceneToLoad.attachControl();
     this.engine.hideLoadingUI();
-    this.status.scene!.dispose();
-    this.status.scene = sceneToLoad;
+    this.uiScene!.dispose();
+    this.uiScene = sceneToLoad;
 }
