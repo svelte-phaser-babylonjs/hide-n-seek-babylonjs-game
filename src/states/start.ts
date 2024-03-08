@@ -1,7 +1,8 @@
 import { Game as Game } from "../Game";
 import { ArcRotateCamera, Scene, Vector3 } from "babylonjs";
-import { AdvancedDynamicTexture, Button, Control, Image, Rectangle } from 'babylonjs-gui';
-import { useFont as changeControlFont } from "../utils";
+import { AdvancedDynamicTexture, Control, Image, Rectangle } from 'babylonjs-gui';
+import { State } from "../defs";
+import { simpleButton } from "../helpers/gui_generator";
 
 const createCamera = function (scene: Scene) {
     const camera = new ArcRotateCamera('camera', Math.PI, Math.PI, 1, Vector3.Zero(), scene);
@@ -34,39 +35,16 @@ const createLogo = function (container: AdvancedDynamicTexture) {
     return titleImg;
 }
 
-const createPlayButton = function (container: AdvancedDynamicTexture) {
-    const playBtn = Button.CreateSimpleButton('play-btn', "Play");
+const createPlayButton = async function (container: AdvancedDynamicTexture) {
+    const fontSizePercentage = 0.05;
+    const playBtn = await simpleButton('play-btn', 'Play', fontSizePercentage, 0.12, 0.24, -(window.innerHeight / 10), Control.VERTICAL_ALIGNMENT_BOTTOM);
 
-    playBtn.height = 0.12;
-    playBtn.width = 0.24;
-
-    playBtn.thickness = 0;
-    playBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
-
-    playBtn.onPointerEnterObservable.add(() => {
-        playBtn.color = "yellow";
-    });
-
-    playBtn.onPointerOutObservable.add(() => {
-        playBtn.color = "white";
-    });
-
-    playBtn.onPointerClickObservable.add(() => {
-        // change the scene to main menu
-    });
-
-    playBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * 0.05;
-    playBtn.top = -(window.innerHeight / 10);
-    playBtn.color = "white";
     window.addEventListener("resize", () => {
-        playBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * 0.05;
+        playBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * fontSizePercentage;
         playBtn.top = -(window.innerHeight / 10);
     });
 
-
-    changeControlFont('14px bongkar', playBtn);
     container.addControl(playBtn);
-
     return playBtn;
 }
 
@@ -95,6 +73,21 @@ const createTheAnimatedImage = function (container: AdvancedDynamicTexture) {
     return animImg;
 }
 
+const createGUI = async function (this: Game, scene: Scene) {
+    const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI('ui', true, scene);
+    createCamera(scene);
+
+    createBackground(guiMenu);
+    createLogo(guiMenu);
+    createTheAnimatedImage(guiMenu);
+
+    const playBtn = await createPlayButton(guiMenu);
+    playBtn.onPointerClickObservable.add(() => {
+        // change the scene to main menu
+        this.goToMainMenu();
+    });
+}
+
 export default async function (this: Game) {
 
     this.status.scene!.detachControl();
@@ -102,14 +95,7 @@ export default async function (this: Game) {
 
     const sceneToLoad = new Scene(this.engine);
 
-    const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI('ui', true, sceneToLoad);
-
-    createBackground(guiMenu);
-    createLogo(guiMenu);
-    createPlayButton(guiMenu);
-    createTheAnimatedImage(guiMenu);
-
-    createCamera(sceneToLoad);
+    await createGUI.call(this, sceneToLoad);
 
     await this.status.scene!.whenReadyAsync();
 
@@ -117,4 +103,6 @@ export default async function (this: Game) {
     this.engine.hideLoadingUI();
     this.status.scene!.dispose();
     this.status.scene = sceneToLoad;
+
+    this.state = State.START;
 }

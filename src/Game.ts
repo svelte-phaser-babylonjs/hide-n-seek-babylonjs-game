@@ -1,5 +1,5 @@
 import { State, Status } from './defs';
-import { start } from './states';
+import { mainMenu, start } from './states';
 import { Engine, Scene } from 'babylonjs';
 import 'babylonjs-loaders';
 
@@ -12,7 +12,9 @@ export class Game {
         state: State.START,
     }
 
+    // states
     protected start = start;
+    protected mainMenu = mainMenu;
 
     constructor(readonly canvas: HTMLCanvasElement) {
         // create BabylonJS engine with anti-aliasing activated
@@ -37,10 +39,10 @@ export class Game {
         }
     }
 
-    run() {
+    async run(): Promise<void> {
         this.debug(false);
 
-        this.start();
+        await this.goToStart();
 
         // running render loop
         this.engine.runRenderLoop(() => {
@@ -77,5 +79,13 @@ export class Game {
                     break;
             }
         });
+    }
+
+    protected async goToStart(): Promise<void> {
+        await this.start();
+    }
+
+    protected async goToMainMenu(): Promise<void> {
+        await this.mainMenu();
     }
 }
