@@ -54,10 +54,9 @@ async function createTheAnimatedBGAndPlayerMesh(scene: Scene) {
     }, scene);
     playerMesh.position.z = -0.4;
     playerMesh.rotation.x = -45;
+    playerMesh.material = await animatedStandardMaterial(scene, "assets/sprites/character/character1_moving_left.png", "character-mat", 8, 1, 120);
 
     playerMesh.setParent(parentMesh);
-
-    playerMesh.material = await animatedStandardMaterial(scene, "assets/sprites/character/character1_moving_left.png", "character-mat", 8, 1, 120);
 
     const animPlayer = new Animation("playerRotationAnimation", "rotationQuaternion", 60, Animation.ANIMATIONTYPE_QUATERNION, Animation.ANIMATIONLOOPMODE_CYCLE);
     const initialRotationQuaternion = new Vector3(-45, 0, 0).toQuaternion();

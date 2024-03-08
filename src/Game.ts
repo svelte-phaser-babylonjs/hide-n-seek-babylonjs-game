@@ -2,7 +2,7 @@ import 'babylonjs-loaders';
 import { mainMenu, soloMenu, start } from './states';
 import { Engine, Scene } from 'babylonjs';
 import { disposeLevel1, initLevel1, level1 } from './states/level1';
-import { Environment } from './models';
+import { CharacterController, Environment } from './models';
 
 export class Game {
     engine: Engine;
@@ -10,6 +10,8 @@ export class Game {
     scene: Scene | null = null;
 
     environment: Environment | null = null;
+
+    characterController: CharacterController | null = null;
 
     // states
     protected gotoStart = start;
