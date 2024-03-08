@@ -1,4 +1,5 @@
 import { HideNSickGameApp as App } from './HideNSickGameApp';
+import './fonts.css';
 
 console.log(`main.ts starting ${App.name}`);
 window.addEventListener('DOMContentLoaded', () => {

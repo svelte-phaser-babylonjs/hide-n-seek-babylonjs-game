@@ -1,6 +1,7 @@
 import { HideNSickGameApp } from "../HideNSickGameApp";
 import { ArcRotateCamera, Scene, Vector3 } from "babylonjs";
 import { AdvancedDynamicTexture, Button, Control, Image, Rectangle } from 'babylonjs-gui';
+import { useFont as changeControlFont } from "../utils";
 
 const createCamera = function (scene: Scene) {
     const camera = new ArcRotateCamera('camera', Math.PI, Math.PI, 1, Vector3.Zero(), scene);
@@ -53,12 +54,8 @@ const createPlayButton = function (container: AdvancedDynamicTexture) {
 
     playBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * 0.05;
     playBtn.color = "white";
-    document.fonts.load('14px bongkar').then(() => {  // start loading font
-        document.fonts.ready.then(() => {
-            console.log('Fonts Ready');  // all fonts is ready
-            playBtn.fontFamily = "bongkar";
-        });
-    });
+
+    changeControlFont('14px bongkar', playBtn);
     container.addControl(playBtn);
 
     return playBtn;
@@ -110,6 +107,7 @@ export default async function (this: HideNSickGameApp) {
     createCamera(sceneToLoad);
 
     await this.status.scene!.whenReadyAsync();
+
     sceneToLoad.attachControl();
     this.engine.hideLoadingUI();
     this.status.scene!.dispose();
