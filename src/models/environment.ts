@@ -1,4 +1,4 @@
-import { Scene, StandardMaterial, Texture, Vector2 } from "babylonjs";
+import { Color3, CubeTexture, MeshBuilder, Scene, StandardMaterial, Texture, Vector2 } from "babylonjs";
 import { spriteMapGenerator, spriteMeshGenerator } from "../helpers/sprite_generator";
 
 export default class {
@@ -39,5 +39,16 @@ export default class {
         const material5 = new StandardMaterial('statue', this.scene);
         const texture5 = new Texture("assets/textures/environment/statue.png", this.scene);
         await spriteMeshGenerator(this.scene, texture5, material5, "statue-mesh", -16, 16, -0.4, 1, 1, 5);
+
+        const skybox = MeshBuilder.CreateBox("skybox", { size: 100 }, this.scene);
+        const skyboxMat = new StandardMaterial("skybox-mat", this.scene);
+        skyboxMat.backFaceCulling = false;
+        skyboxMat.reflectionTexture = new CubeTexture("assets/textures/skybox/skybox_water", this.scene);
+        skyboxMat.reflectionTexture.coordinatesMode = Texture.SKYBOX_MODE;
+        skyboxMat.diffuseColor = new Color3(0, 0, 0);
+        skyboxMat.specularColor = new Color3(0, 0, 0);
+        skyboxMat.disableLighting = true;
+
+        skybox.material = skyboxMat;
     }
 }
