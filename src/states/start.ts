@@ -37,7 +37,7 @@ const createLogo = function (container: AdvancedDynamicTexture) {
 
 const createPlayButton = async function (container: AdvancedDynamicTexture) {
     const fontSizePercentage = 0.05;
-    const playBtn = await simpleButton('play-btn', 'Play', fontSizePercentage, 0.12, 0.24, -(window.innerHeight / 10), Control.VERTICAL_ALIGNMENT_BOTTOM);
+    const playBtn = await simpleButton('play-btn', 'Play', fontSizePercentage, 0.12, -(window.innerHeight / 10), Control.VERTICAL_ALIGNMENT_BOTTOM);
 
     window.addEventListener("resize", () => {
         playBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * fontSizePercentage;

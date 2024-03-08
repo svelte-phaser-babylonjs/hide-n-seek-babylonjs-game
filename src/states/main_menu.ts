@@ -108,19 +108,19 @@ async function createGUI(this: Game, scene: Scene) {
 
     const fontSizePercentage = 0.06;
 
-    const soloBtn = await simpleButton('solo-btn', 'Solo', fontSizePercentage, 0.12, 0.15, -((window.innerHeight / 20) * 6), Control.VERTICAL_ALIGNMENT_BOTTOM);
+    const soloBtn = await simpleButton('solo-btn', 'Solo', fontSizePercentage, 0.12, -((window.innerHeight / 20) * 6), Control.VERTICAL_ALIGNMENT_BOTTOM);
     soloBtn.onPointerClickObservable.add(() => {
         this.gotoSoloMenu();
     });
     guiMenu.addControl(soloBtn);
 
-    const multiBtn = await simpleButton('multi-btn', 'Multiplayer', fontSizePercentage, 0.12, 0.6, -((window.innerHeight / 20) * 3.5), Control.VERTICAL_ALIGNMENT_BOTTOM);
+    const multiBtn = await simpleButton('multi-btn', 'Multiplayer', fontSizePercentage, 0.12, -((window.innerHeight / 20) * 3.5), Control.VERTICAL_ALIGNMENT_BOTTOM);
     multiBtn.onPointerClickObservable.add(() => {
 
     });
     guiMenu.addControl(multiBtn);
 
-    const optionsBtn = await simpleButton('opt-btn', 'Options', fontSizePercentage, 0.12, 0.4, -(window.innerHeight / 20), Control.VERTICAL_ALIGNMENT_BOTTOM);
+    const optionsBtn = await simpleButton('opt-btn', 'Options', fontSizePercentage, 0.12, -(window.innerHeight / 20), Control.VERTICAL_ALIGNMENT_BOTTOM);
     optionsBtn.onPointerClickObservable.add(() => {
 
     });
