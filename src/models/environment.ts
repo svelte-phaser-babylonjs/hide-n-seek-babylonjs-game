@@ -1,4 +1,4 @@
-import { Color3, CubeTexture, MeshBuilder, Scene, StandardMaterial, Texture, Vector2 } from "babylonjs";
+import { Color3, Color4, CubeTexture, MeshBuilder, ParticleSystem, Scene, StandardMaterial, Texture, Vector2, Vector3 } from "babylonjs";
 import { spriteMapGenerator, spriteMeshGenerator } from "../helpers/sprite_generator";
 
 export default class {
@@ -50,5 +50,51 @@ export default class {
         skyboxMat.disableLighting = true;
 
         skybox.material = skyboxMat;
+
+        await this.fog();
+    }
+
+    private async fog() {
+        let particleSystem = new ParticleSystem("particle-sys", 500, this.scene);
+        const emitterParticles = MeshBuilder.CreateBox("emitter-particles", { size: 0.01 }, this.scene);
+
+        emitterParticles.position.z = -1;
+        emitterParticles.rotationQuaternion = new Vector3(Math.PI / 2, 0, 0).toQuaternion();
+        emitterParticles.visibility = 0;
+
+        particleSystem.manualEmitCount = particleSystem.getCapacity();
+        particleSystem.minEmitBox = new Vector3(-16, 2, -16);
+        particleSystem.maxEmitBox = new Vector3(16, 2, 16);
+
+        particleSystem.color1 = new Color4(0.8, 0.8, 0.8, 0.85);
+        particleSystem.color2 = new Color4(0.95, 0.95, 0.95, 0.95);
+        particleSystem.colorDead = new Color4(0.9, 0.9, 0.9, 0.6);
+
+        particleSystem.minSize = 3.5;
+        particleSystem.maxSize = 5;
+        particleSystem.minLifeTime = Number.MAX_SAFE_INTEGER;
+
+        particleSystem.emitRate = 50000;
+
+        particleSystem.blendMode = ParticleSystem.BLENDMODE_STANDARD;
+
+        particleSystem.gravity = Vector3.Zero();
+        particleSystem.direction1 = Vector3.Zero();
+        particleSystem.direction2 = Vector3.Zero();
+
+        particleSystem.minAngularSpeed = -2;
+        particleSystem.maxAngularSpeed = 2;
+
+        particleSystem.minEmitPower = 0.5;
+        particleSystem.maxEmitPower = 1;
+
+        particleSystem.updateSpeed = 0.005;
+
+        particleSystem.emitter = emitterParticles;
+        particleSystem.renderingGroupId = 1;
+        const fogTexture = new Texture("assets/textures/smoke.png", this.scene);
+        particleSystem.particleTexture = fogTexture.clone();
+
+        particleSystem.start();
     }
 }
