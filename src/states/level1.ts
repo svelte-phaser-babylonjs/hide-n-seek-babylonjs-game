@@ -1,10 +1,12 @@
-import { Scene } from "babylonjs";
+import { DirectionalLight, FreeCamera, Scene, Vector3 } from "babylonjs";
 import { Game } from "../Game";
+import { Environment } from "../models";
 
 let levelScene: Scene | null = null;
 
 export async function initLevel1(this: Game) {
     levelScene = new Scene(this.engine);
+    this.environment = new Environment(levelScene);
 }
 
 export async function disposeLevel1(this: Game) {
@@ -15,7 +17,7 @@ export async function level1(this: Game) {
     this.scene!.detachControl();
     this.engine.displayLoadingUI();
 
-    // await createGUI.call(this, sceneToLoad);
+    await createLevel.call(this);
 
     await this.scene!.whenReadyAsync();
 
@@ -23,4 +25,12 @@ export async function level1(this: Game) {
     this.engine.hideLoadingUI();
     this.scene!.dispose();
     this.scene = levelScene;
+}
+
+async function createLevel(this: Game) {
+    const camera = new FreeCamera("camera", Vector3.Zero(), levelScene!);
+    camera.attachControl(true);
+
+    const light = new DirectionalLight("light", new Vector3(0, 1, 1), levelScene!);
+    light.intensity = 0.4;
 }
