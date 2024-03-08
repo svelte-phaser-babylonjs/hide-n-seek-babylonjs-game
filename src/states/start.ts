@@ -17,6 +17,8 @@ const createBackground = function (container: AdvancedDynamicTexture) {
     bg.background = '#9dc9b5';
 
     container.addControl(bg);
+
+    return bg;
 }
 
 const createLogo = function (container: AdvancedDynamicTexture) {
@@ -28,6 +30,8 @@ const createLogo = function (container: AdvancedDynamicTexture) {
     titleImg.top = (window.innerHeight / 10);
 
     container.addControl(titleImg);
+
+    return titleImg;
 }
 
 const createPlayButton = function (container: AdvancedDynamicTexture) {
@@ -36,7 +40,6 @@ const createPlayButton = function (container: AdvancedDynamicTexture) {
     playBtn.height = 0.12;
     playBtn.width = 0.24;
 
-    playBtn.top = -(window.innerHeight / 10);
     playBtn.thickness = 0;
     playBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
 
@@ -53,7 +56,13 @@ const createPlayButton = function (container: AdvancedDynamicTexture) {
     });
 
     playBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * 0.05;
+    playBtn.top = -(window.innerHeight / 10);
     playBtn.color = "white";
+    window.addEventListener("resize", () => {
+        playBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * 0.05;
+        playBtn.top = -(window.innerHeight / 10);
+    });
+
 
     changeControlFont('14px bongkar', playBtn);
     container.addControl(playBtn);
@@ -68,14 +77,18 @@ const createTheAnimatedImage = function (container: AdvancedDynamicTexture) {
     animImg.cellWidth = 600;
     animImg.cellHeight = 600;
 
-    animImg.height = 0.5 * window.innerHeight + "px";
-    animImg.width = 0.5 * window.innerHeight + "px";
 
     setInterval(() => {
         if (animImg.cellId < 7) animImg.cellId++;
         else animImg.cellId = 1;
     }, 700);
 
+    animImg.height = 0.5 * window.innerHeight + "px";
+    animImg.width = 0.5 * window.innerHeight + "px";
+    window.addEventListener("resize", () => {
+        animImg.height = 0.5 * window.innerHeight + "px";
+        animImg.width = 0.5 * window.innerHeight + "px";
+    });
 
     container.addControl(animImg);
 
@@ -93,16 +106,8 @@ export default async function (this: HideNSickGameApp) {
 
     createBackground(guiMenu);
     createLogo(guiMenu);
-    const playBtn = createPlayButton(guiMenu);
-    const animImg = createTheAnimatedImage(guiMenu);
-
-    window.addEventListener("resize", () => {
-        playBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * 0.05;
-        playBtn.top = -(window.innerHeight / 10);
-
-        animImg.height = 0.5 * window.innerHeight + "px";
-        animImg.width = 0.5 * window.innerHeight + "px";
-    });
+    createPlayButton(guiMenu);
+    createTheAnimatedImage(guiMenu);
 
     createCamera(sceneToLoad);
 
