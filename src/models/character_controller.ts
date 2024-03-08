@@ -2,7 +2,7 @@ import { DirectionalLight, FollowCamera, Mesh, MeshBuilder, Scene, StandardMater
 import { animatedStandardMaterial } from "../helpers/sprite_generator";
 import { InputController } from ".";
 
-const CHARACTER_SPEED: number = 10;
+const CHARACTER_SPEED: number = 9;
 
 type CharacterAnimations = {
     watching: StandardMaterial | null,
@@ -56,7 +56,7 @@ export default class {
                 `character1-${key}-mat`,
                 8,
                 1,
-                160
+                55
             );
         }
     }
@@ -111,7 +111,11 @@ export default class {
         this.direction = this.direction.scaleInPlace(this.inputAmt * CHARACTER_SPEED * dt);
 
         if (this.mesh) {
-            this.mesh.moveWithCollisions(this.direction);
+            const limitedDirection = new Vector3(
+                (this.mesh.position.x > 16 && this.direction.x > 0) || (this.mesh.position.x < -16 && this.direction.x < 0) ? 0 : this.direction.x,
+                (this.mesh.position.y > 16 && this.direction.y > 0) || (this.mesh.position.y < -16 && this.direction.y < 0) ? 0 : this.direction.y
+            );
+            this.mesh.moveWithCollisions(limitedDirection);
         }
     }
 
