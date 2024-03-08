@@ -136,7 +136,6 @@ async function createGUI(this: Game, scene: Scene) {
 }
 
 export default async function (this: Game) {
-
     this.status.scene!.detachControl();
     this.engine.displayLoadingUI();
 
