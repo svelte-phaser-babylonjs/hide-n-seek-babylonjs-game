@@ -1,9 +1,9 @@
-import { DirectionalLight, FreeCamera, Scene, SpritePackedManager, Vector2, Vector3 } from "babylonjs";
+import { DirectionalLight, FreeCamera, Mesh, MeshBuilder, Scene, SpritePackedManager, Vector2, Vector3 } from "babylonjs";
 import { Game } from "../Game";
 import { State } from "../defs";
 import { AdvancedDynamicTexture, Control, Image } from "babylonjs-gui";
 import { simpleButton } from "../helpers/gui_generator";
-import { spriteMapGenerator, spritePackRandomGenerator, spriteRandomGenerator } from "../helpers/sprite_generator";
+import { animatedStandardMaterial, spriteMapGenerator, spritePackRandomGenerator, spriteRandomGenerator } from "../helpers/sprite_generator";
 
 const createCamera = function (scene: Scene) {
     const camera = new FreeCamera('camera', Vector3.Zero(), scene);
@@ -37,6 +37,20 @@ async function createTheAnimatedBG(scene: Scene) {
         new Vector2(4, 4),
         new Vector2(40, 40)
     );
+
+    const parentMesh = new Mesh("parent-player-mesh", scene);
+
+    const playerMesh = MeshBuilder.CreatePlane("player-mesh", {
+        width: 1,
+        height: 1,
+        sideOrientation: Mesh.DOUBLESIDE
+    }, scene);
+    playerMesh.position.z = -0.4;
+    playerMesh.rotation.x = -45;
+
+    playerMesh.setParent(parentMesh);
+
+    playerMesh.material = await animatedStandardMaterial(scene, "assets/sprites/character/character1_moving_left.png", "character-mat", 8, 1, 120);
 }
 
 const createLogo = function (container: AdvancedDynamicTexture) {

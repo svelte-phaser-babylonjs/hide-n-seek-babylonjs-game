@@ -31,17 +31,7 @@ export class Game {
         this.state = State.START;
     }
 
-    debug(debugOn: boolean = true) {
-        if (debugOn) {
-            this.status.scene!.debugLayer.show({ overlay: true });
-        } else {
-            this.status.scene!.debugLayer.hide();
-        }
-    }
-
     async run(): Promise<void> {
-        this.debug(false);
-
         await this.goToStart();
 
         // running render loop

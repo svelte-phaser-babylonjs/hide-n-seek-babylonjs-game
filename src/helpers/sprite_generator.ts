@@ -1,4 +1,4 @@
-import { AssetsManager, Engine, Scene, Sprite, SpriteManager, SpriteMap, SpritePackedManager, Texture, Vector2, Vector3 } from "babylonjs";
+import { AssetsManager, Engine, Scene, Sprite, SpriteManager, SpriteMap, SpritePackedManager, StandardMaterial, Texture, Vector2, Vector3 } from "babylonjs";
 
 export async function spriteRandomGenerator(
     scene: Scene,
@@ -97,4 +97,48 @@ export async function spriteMapGenerator(
     }
 
     assetsManager.loadAsync();
+}
+
+export async function animatedStandardMaterial(
+    scene: Scene,
+    textureUrl: string,
+    name: string,
+    columnsNumber: number,
+    linesNumber: number,
+    timeIntervalAnimation: number
+): Promise<StandardMaterial> {
+    const texture = new Texture(textureUrl, scene);
+    texture.hasAlpha = true;
+    texture.uScale = 1 / columnsNumber;
+    texture.vScale = 1 / linesNumber;
+    texture.uOffset = 0;
+    texture.vOffset = 1 / linesNumber;
+
+    setInterval(() => {
+        if (texture.uOffset >= (1 - (1 / columnsNumber))) {
+            texture.uOffset = 0;
+
+            switch (texture.vOffset) {
+                case 0:
+                    texture.vOffset = 1 / linesNumber;
+                    break;
+
+                case 1:
+                    texture.vOffset = 0;
+                    break;
+            }
+        } else {
+            texture.uOffset += 1 / columnsNumber;
+        }
+    }, timeIntervalAnimation);
+
+    let animatedMat = new StandardMaterial(name, scene);
+    animatedMat.diffuseTexture = texture;
+    animatedMat.diffuseTexture.hasAlpha = true;
+    animatedMat.emissiveTexture = texture;
+    animatedMat.emissiveTexture.hasAlpha = true;
+
+    animatedMat.useAlphaFromDiffuseTexture = true;
+
+    return animatedMat;
 }
