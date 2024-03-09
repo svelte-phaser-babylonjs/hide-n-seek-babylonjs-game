@@ -28,7 +28,8 @@ export default abstract class {
 
         this.configCharacter(defaultPosX, defaultPosY).then(async () => {
             await this.init();
-            this.isReady = true;
+
+            setTimeout(() => this.isReady = true, 2000);
 
             this.scene.registerBeforeRender(() => {
                 if (state.isPaused) return;
@@ -40,7 +41,7 @@ export default abstract class {
 
     }
 
-    protected abstract init(): void;
+    protected abstract init(): Promise<void>;
 
     protected abstract setupAnimations(): Promise<void>;
 
