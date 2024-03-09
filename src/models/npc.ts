@@ -31,7 +31,7 @@ export default class NpcController extends Entity {
                 this.position = new Vector3(randomPosX, randomPosY, 0);
 
             }
-        }, 10000)
+        }, 3000)
     }
 
     protected async setupAnimations(): Promise<void> {
