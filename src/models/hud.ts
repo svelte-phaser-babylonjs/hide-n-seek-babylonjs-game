@@ -20,7 +20,9 @@ export default class {
         this.setupUI(state);
 
         this.scene.registerBeforeRender(() => {
-            this.updateHud(state);
+            if (state.isPaused) return;
+
+            this.updateHud();
         })
     }
 
@@ -62,8 +64,8 @@ export default class {
         return String(Math.round(this.counter));
     }
 
-    private async updateHud(state: GameState) {
-        if (!this.scene || state.isPaused) return;
+    private async updateHud() {
+        if (!this.scene) return;
 
         const dt = this.scene.getEngine().getDeltaTime() / 1000;
 
