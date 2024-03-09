@@ -83,7 +83,7 @@ export default class {
 
         this.score = await simpleTextBlock('rabbit-counter', `${state.score1} / 10`, "yellow", FONT_SIZE_PERCENTAGE, 0.1, 0, Control.VERTICAL_ALIGNMENT_TOP);
         this.score.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
-        this.score.leftInPixels = 0.04 * window.innerWidth;
+        this.score.leftInPixels = 0.08 * window.innerWidth;
         this.score.width = 0.25;
         this.texture.addControl(this.score);
 
@@ -130,7 +130,10 @@ export default class {
     }
 
     private async formatTime() {
-        if (this.counter < 0) return "0";
+        if (this.counter < 0) {
+            this.state.state = 'lose';
+            return "0";
+        }
 
         return String(Math.round(this.counter));
     }

@@ -1,5 +1,5 @@
 import 'babylonjs-loaders';
-import { mainMenu, soloMenu, start } from './states';
+import { lose, mainMenu, soloMenu, start, win } from './states';
 import { Engine, Scene } from 'babylonjs';
 import { disposeLevel1, initLevel1, level1 } from './states/level1';
 import { Character, Environment } from './models';
@@ -19,15 +19,20 @@ export class Game {
         score2: 0,
 
         destroyMesh: null,
+        state: 'on-going',
     }
 
     // states
     protected gotoStart = start;
     protected gotoMainMenu = mainMenu;
     protected gotoSoloMenu = soloMenu;
+    protected goToWin = win;
+    protected goToLose = lose;
+
     protected gotoLevel1 = level1;
     protected setupLevel1 = initLevel1;
     protected removeLevel1 = disposeLevel1;
+
 
     constructor(readonly canvas: HTMLCanvasElement) {
         // create BabylonJS engine with anti-aliasing activated
@@ -56,5 +61,6 @@ export class Game {
         this.gameState.score1 = 0;
         this.gameState.score2 = 0;
         this.gameState.destroyMesh = null;
+        this.gameState.state = 'on-going';
     }
 }

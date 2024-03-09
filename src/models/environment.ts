@@ -6,13 +6,13 @@ import { GameState } from "../defs";
 export default class {
     private scene: Scene;
 
-    constructor(scene: Scene, state: GameState) {
+    constructor(scene: Scene, state: GameState, winScore: number) {
         this.scene = scene;
 
-        this.initMap(state);
+        this.initMap(state, winScore);
     }
 
-    private async initMap(state: GameState) {
+    private async initMap(state: GameState, winScore: number) {
         spriteMapGenerator(
             this.scene,
             "assets/textures/tile_map_texture.png",
@@ -44,7 +44,7 @@ export default class {
 
 
         // NPCs
-        for (let i = 0; i < 10; ++i) {
+        for (let i = 0; i < winScore; ++i) {
             const randomPosX = (Math.random() * 32) - 16;
             const randomPosY = (Math.random() * 32) - 16;
 

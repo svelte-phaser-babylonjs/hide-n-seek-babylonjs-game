@@ -1,4 +1,4 @@
-import { Game as Game } from "../Game";
+import { Game } from "../Game";
 import { ArcRotateCamera, Scene, Vector3 } from "babylonjs";
 import { AdvancedDynamicTexture, Control, Image, Rectangle } from 'babylonjs-gui';
 import { simpleButton } from "../helpers/gui_generator";

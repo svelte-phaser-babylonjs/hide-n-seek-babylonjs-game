@@ -5,12 +5,21 @@ import { GameState } from "../defs";
 
 let levelScene: Scene | null = null;
 
+let winScore = 10;
+
 export async function initLevel1(this: Game) {
     levelScene = new Scene(this.engine);
-    this.environment = new Environment(levelScene, this.gameState);
+    this.environment = new Environment(levelScene, this.gameState, winScore);
 
     levelScene.registerBeforeRender(() => {
         if (this.gameState.isExited) this.gotoMainMenu();
+        if (this.gameState.score1 === winScore) {
+            this.gameState.state = 'on-going';
+            this.goToWin();
+        } else if (this.gameState.state === 'lose') {
+            this.gameState.state = 'on-going';
+            this.goToLose();
+        }
     });
 }
 

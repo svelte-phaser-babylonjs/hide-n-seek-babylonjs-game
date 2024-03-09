@@ -19,4 +19,6 @@ export type GameState = {
     score1: number;
     score2: number;
     destroyMesh: ((mesh: Mesh) => void) | null;
+
+    state: 'on-going' | 'lose'
 }
