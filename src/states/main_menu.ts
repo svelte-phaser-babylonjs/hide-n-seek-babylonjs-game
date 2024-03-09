@@ -3,6 +3,7 @@ import { Game } from "../Game";
 import { AdvancedDynamicTexture, Control, Image } from "babylonjs-gui";
 import { simpleButton } from "../helpers/gui_generator";
 import { animatedStandardMaterial, spriteMapGenerator, spritePackRandomGenerator, spriteRandomGenerator } from "../helpers/sprite_generator";
+import { FONT_SIZE_PERCENTAGE } from "../defs";
 
 const createCameraAndLight = function (scene: Scene, target: AbstractMesh) {
     const light = new DirectionalLight("light", new Vector3(0, 1, 1), scene);
@@ -104,30 +105,28 @@ const createLogo = function (container: AdvancedDynamicTexture) {
 async function createGUI(this: Game, scene: Scene) {
     const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI('ui', true, scene);
 
-    const fontSizePercentage = 0.06;
-
-    const soloBtn = await simpleButton('solo-btn', 'Solo', fontSizePercentage, 0.12, -((window.innerHeight / 20) * 6), Control.VERTICAL_ALIGNMENT_BOTTOM);
+    const soloBtn = await simpleButton('solo-btn', 'Solo', FONT_SIZE_PERCENTAGE, 0.12, -((window.innerHeight / 20) * 6), Control.VERTICAL_ALIGNMENT_BOTTOM);
     soloBtn.onPointerClickObservable.add(() => {
         this.gotoSoloMenu();
     });
     guiMenu.addControl(soloBtn);
 
-    const multiBtn = await simpleButton('multi-btn', 'Multiplayer', fontSizePercentage, 0.12, -((window.innerHeight / 20) * 3.5), Control.VERTICAL_ALIGNMENT_BOTTOM);
+    const multiBtn = await simpleButton('multi-btn', 'Multiplayer', FONT_SIZE_PERCENTAGE, 0.12, -((window.innerHeight / 20) * 3.5), Control.VERTICAL_ALIGNMENT_BOTTOM);
     multiBtn.onPointerClickObservable.add(() => {
 
     });
     guiMenu.addControl(multiBtn);
 
-    const optionsBtn = await simpleButton('opt-btn', 'Options', fontSizePercentage, 0.12, -(window.innerHeight / 20), Control.VERTICAL_ALIGNMENT_BOTTOM);
+    const optionsBtn = await simpleButton('opt-btn', 'Options', FONT_SIZE_PERCENTAGE, 0.12, -(window.innerHeight / 20), Control.VERTICAL_ALIGNMENT_BOTTOM);
     optionsBtn.onPointerClickObservable.add(() => {
 
     });
     guiMenu.addControl(optionsBtn);
 
     window.addEventListener("resize", () => {
-        soloBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * fontSizePercentage;
-        multiBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * fontSizePercentage;
-        optionsBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * fontSizePercentage;
+        soloBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * FONT_SIZE_PERCENTAGE;
+        multiBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * FONT_SIZE_PERCENTAGE;
+        optionsBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * FONT_SIZE_PERCENTAGE;
     });
 
     createLogo(guiMenu);

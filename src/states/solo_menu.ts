@@ -2,8 +2,7 @@ import { ArcRotateCamera, Scene, Vector3 } from "babylonjs";
 import { Game } from "../Game";
 import { AdvancedDynamicTexture, Control, Grid, Image, Rectangle, ScrollViewer } from "babylonjs-gui";
 import { imageButton, simpleButton, simpleTextBlock } from "../helpers/gui_generator";
-
-const fontSizePercentage = 0.06;
+import { FONT_SIZE_PERCENTAGE } from "../defs";
 
 const createCamera = function (scene: Scene) {
     const camera = new ArcRotateCamera('camera', Math.PI, Math.PI, 1, Vector3.Zero(), scene);
@@ -65,15 +64,15 @@ async function createModal(this: Game, container: AdvancedDynamicTexture) {
     controls.width = 1;
     grid.addControl(controls, 0, 0);
 
-    const goalText = await simpleTextBlock("solo-indications", "Find and catch all the rabbits before running out of time.", "white", fontSizePercentage / 2, 0.5, 0, Control.VERTICAL_ALIGNMENT_CENTER);
+    const goalText = await simpleTextBlock("solo-indications", "Find and catch all the rabbits before running out of time.", "white", FONT_SIZE_PERCENTAGE / 2, 0.5, 0, Control.VERTICAL_ALIGNMENT_CENTER);
     goalText.textWrapping = true;
     grid.addControl(goalText, 0, 1);
 
-    const timeText = await simpleTextBlock("solo-time", "60 Seconds", "white", fontSizePercentage / 2, 0.5, 0, Control.VERTICAL_ALIGNMENT_CENTER);
+    const timeText = await simpleTextBlock("solo-time", "60 Seconds", "white", FONT_SIZE_PERCENTAGE / 2, 0.5, 0, Control.VERTICAL_ALIGNMENT_CENTER);
     timeText.textWrapping = true;
     grid.addControl(timeText, 1, 0);
 
-    const startBtn = await simpleButton("start-btn", "Start", fontSizePercentage, 1, 1, Control.VERTICAL_ALIGNMENT_CENTER);
+    const startBtn = await simpleButton("start-btn", "Start", FONT_SIZE_PERCENTAGE, 1, 1, Control.VERTICAL_ALIGNMENT_CENTER);
     startBtn.onPointerClickObservable.add(async () => {
         // launch level 1
         await this.gotoLevel1();
@@ -81,9 +80,9 @@ async function createModal(this: Game, container: AdvancedDynamicTexture) {
     grid.addControl(startBtn, 1, 1);
 
     window.addEventListener("resize", () => {
-        startBtn.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * fontSizePercentage;
-        goalText.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * fontSizePercentage / 2;
-        timeText.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * fontSizePercentage;
+        startBtn.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
+        goalText.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE / 2;
+        timeText.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
     })
 
     return { modal, containerGrid };
@@ -94,7 +93,7 @@ async function createGUI(this: Game, scene: Scene) {
 
     createBackground(guiMenu);
 
-    const soloTitle = await simpleTextBlock("solo-title", "Choose your level", "white", fontSizePercentage, 0.1, (window.innerHeight / 20), Control.VERTICAL_ALIGNMENT_TOP);
+    const soloTitle = await simpleTextBlock("solo-title", "Choose your level", "white", FONT_SIZE_PERCENTAGE, 0.1, (window.innerHeight / 20), Control.VERTICAL_ALIGNMENT_TOP);
     guiMenu.addControl(soloTitle);
 
     const { modal, containerGrid } = await createModal.call(this, guiMenu);
@@ -108,7 +107,7 @@ async function createGUI(this: Game, scene: Scene) {
     scrollViewer.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
     guiMenu.addControl(scrollViewer);
 
-    const level1Btn = await imageButton("level1-btn", "The Rabbit Invasion", "assets/textures/UI/level1.svg", fontSizePercentage / 2, 0.3, 0, Control.HORIZONTAL_ALIGNMENT_LEFT);
+    const level1Btn = await imageButton("level1-btn", "The Rabbit Invasion", "assets/textures/UI/level1.svg", FONT_SIZE_PERCENTAGE / 2, 0.3, 0, Control.HORIZONTAL_ALIGNMENT_LEFT);
     level1Btn.onPointerClickObservable.add(async () => {
         modal.isVisible = true;
         containerGrid.isVisible = true;
@@ -117,7 +116,7 @@ async function createGUI(this: Game, scene: Scene) {
     });
     scrollViewer.addControl(level1Btn);
 
-    const backBtn = await simpleButton('back-btn', '> Back', fontSizePercentage / 1.5, 0.1, (0.4 * window.innerHeight), Control.VERTICAL_ALIGNMENT_TOP);
+    const backBtn = await simpleButton('back-btn', '> Back', FONT_SIZE_PERCENTAGE / 1.5, 0.1, (0.4 * window.innerHeight), Control.VERTICAL_ALIGNMENT_TOP);
     backBtn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
     backBtn.leftInPixels = -80;
     backBtn.onPointerClickObservable.add(() => {
@@ -126,9 +125,9 @@ async function createGUI(this: Game, scene: Scene) {
     guiMenu.addControl(backBtn);
 
     window.addEventListener("resize", () => {
-        soloTitle.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * fontSizePercentage;
-        level1Btn.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * fontSizePercentage / 2;
-        backBtn.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * fontSizePercentage / 1.5;
+        soloTitle.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
+        level1Btn.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE / 2;
+        backBtn.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE / 1.5;
     });
 }
 

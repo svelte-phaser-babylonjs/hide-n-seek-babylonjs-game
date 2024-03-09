@@ -2,6 +2,7 @@ import { Game as Game } from "../Game";
 import { ArcRotateCamera, Scene, Vector3 } from "babylonjs";
 import { AdvancedDynamicTexture, Control, Image, Rectangle } from 'babylonjs-gui';
 import { simpleButton } from "../helpers/gui_generator";
+import { FONT_SIZE_PERCENTAGE } from "../defs";
 
 const createCamera = function (scene: Scene) {
     const camera = new ArcRotateCamera('camera', Math.PI, Math.PI, 1, Vector3.Zero(), scene);
@@ -35,11 +36,10 @@ const createLogo = function (container: AdvancedDynamicTexture) {
 }
 
 const createPlayButton = async function (container: AdvancedDynamicTexture) {
-    const fontSizePercentage = 0.05;
-    const playBtn = await simpleButton('play-btn', 'Play', fontSizePercentage, 0.12, -(window.innerHeight / 10), Control.VERTICAL_ALIGNMENT_BOTTOM);
+    const playBtn = await simpleButton('play-btn', 'Play', FONT_SIZE_PERCENTAGE, 0.12, -(window.innerHeight / 10), Control.VERTICAL_ALIGNMENT_BOTTOM);
 
     window.addEventListener("resize", () => {
-        playBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * fontSizePercentage;
+        playBtn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * FONT_SIZE_PERCENTAGE;
         playBtn.top = -(window.innerHeight / 10);
     });
 
