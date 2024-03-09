@@ -57,7 +57,5 @@ async function createLevel(this: Game) {
 }
 
 async function makeHud(state: GameState) {
-    const hud = await new Hud(levelScene!, state);
-
-    state.destroyMesh = hud.destroyMesh;
+    state.destroyMesh = await new Hud(levelScene!, state).destroyMesh;
 }

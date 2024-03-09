@@ -28,7 +28,7 @@ export default class extends Entity {
                 this.mesh.isVisible = false;
 
                 if (this.state.destroyMesh) {
-                    this.state.destroyMesh(this.mesh);
+                    this.state.destroyMesh(this.mesh, 1);
                 }
 
                 this.state.score1 += 1;
@@ -37,7 +37,7 @@ export default class extends Entity {
                 this.mesh.isVisible = false;
 
                 if (this.state.destroyMesh) {
-                    this.state.destroyMesh(this.mesh);
+                    this.state.destroyMesh(this.mesh, 2);
                 }
 
                 this.state.score2 += 1;

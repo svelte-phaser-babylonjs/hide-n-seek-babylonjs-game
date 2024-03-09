@@ -16,7 +16,7 @@ export default class {
     private exitBtn!: Button;
     private state: GameState;
 
-    public destroyMesh: ((mesh: Mesh) => void) | null;
+    public destroyMesh: ((mesh: Mesh, playerNumber: number) => void) | null;
 
     // Timer components
     private counter = 60;
@@ -27,13 +27,21 @@ export default class {
 
         this.setupUI(state);
 
-        this.destroyMesh = async (mesh: Mesh) => {
+        this.destroyMesh = async (mesh: Mesh, playerNumber: number) => {
             await scene.whenReadyAsync();
+
+            const canvas = document.getElementById("renderCanvas");
+            const ratio = playerNumber === 1 ? -0.025 : 0.25;
 
             const feedback = new Ellipse();
             feedback.widthInPixels = 40;
             feedback.heightInPixels = 40;
             feedback.background = "white";
+            feedback.zIndex = 10;
+
+            if (state.isTwoPlayer) {
+                feedback.leftInPixels = canvas!.offsetWidth * ratio;
+            }
 
             this.texture.addControl(feedback);
 
@@ -44,12 +52,11 @@ export default class {
             setTimeout(() => {
                 feedback.linkWithMesh(null);
 
-                const distanceX = feedback.leftInPixels / CATCH_FEEDBACK_SPEED;
-                const distanceY = feedback.topInPixels / CATCH_FEEDBACK_SPEED;
-
+                const distanceX = !state.isTwoPlayer ? feedback.leftInPixels / CATCH_FEEDBACK_SPEED : ((canvas!.offsetWidth / 2) + (canvas!.offsetWidth * ratio)) / CATCH_FEEDBACK_SPEED;
+                const distanceY = !state.isTwoPlayer ? feedback.topInPixels / CATCH_FEEDBACK_SPEED : (canvas!.offsetHeight / 2) / CATCH_FEEDBACK_SPEED;
 
                 const interval = setInterval(() => {
-                    if (feedback.leftInPixels > 0) {
+                    if (feedback.leftInPixels > -(canvas!.offsetWidth / 2)) {
                         feedback.leftInPixels -= distanceX;
                         feedback.topInPixels -= distanceY;
                     } else {
@@ -72,13 +79,13 @@ export default class {
                 this.score2.text = `${state.score2} / 10`;
             }
 
+            this.updateHud();
+
             if (state.score1 + state.score2 === state.winScore) {
                 setTimeout(() => {
                     state.isGameOver = true;
-                }, 200);
+                }, 500);
             }
-
-            this.updateHud();
         })
     }
 
