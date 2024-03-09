@@ -1,4 +1,4 @@
-import { KeyboardEventTypes, Mesh, Scene } from "babylonjs";
+import { Camera, FreeCamera, KeyboardEventTypes, Mesh, Scene, Vector3 } from "babylonjs";
 import { AdvancedDynamicTexture, Button, Control, Ellipse, Rectangle, TextBlock } from "babylonjs-gui";
 import { image, rectangle, simpleButton, simpleTextBlock } from "../helpers/gui_generator";
 import { CATCH_FEEDBACK_SPEED, FONT_SIZE_PERCENTAGE, GameState } from "../defs";
@@ -74,6 +74,14 @@ export default class {
     private async setupUI(state: GameState) {
         this.texture = AdvancedDynamicTexture.CreateFullscreenUI("hud-texture", true, this.scene);
 
+        if (state.isTwoPlayer) {
+            const guiCamera = new FreeCamera("hud-cam", new Vector3(0, 0, 0), this.scene);
+            guiCamera.mode = Camera.ORTHOGRAPHIC_CAMERA;
+            guiCamera.layerMask = 0x10000000;
+            this.scene.activeCameras?.push(guiCamera);
+            this.texture.layer!.layerMask = 0x10000000;
+        }
+
         this.timer = await simpleTextBlock("timer", "1:00", "yellow", FONT_SIZE_PERCENTAGE, 0.1, 0, Control.VERTICAL_ALIGNMENT_TOP);
         this.texture.addControl(this.timer);
 
@@ -131,7 +139,7 @@ export default class {
 
     private async formatTime() {
         if (this.counter < 0) {
-            this.state.isGameOver = 'lose';
+            this.state.isGameOver = true;
             return "0";
         }
 

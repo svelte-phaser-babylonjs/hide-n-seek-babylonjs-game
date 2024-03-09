@@ -62,6 +62,7 @@ async function createModal(this: Game, container: AdvancedDynamicTexture) {
     levelMenuBtn.height = 0.2;
     levelMenuBtn.width = 0.3;
     levelMenuBtn.onPointerClickObservable.add(async () => {
+        this.gameState.isTwoPlayer = true;
         await this.gotoSoloMenu();
     });
     container.addControl(levelMenuBtn);

@@ -52,7 +52,7 @@ async function createLevel(this: Game) {
     this.characterController[0] = new Character(levelScene!, this.gameState, 1, 0, 0);
 
     if (this.gameState.isTwoPlayer) {
-        this.characterController[1] = new Character(levelScene!, this.gameState, 2, 0, 0);
+        this.characterController[1] = new Character(levelScene!, this.gameState, 2, 2, 2);
     }
 }
 

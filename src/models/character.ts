@@ -1,4 +1,4 @@
-import { DirectionalLight, FollowCamera, Mesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from "babylonjs";
+import { DirectionalLight, FollowCamera, Mesh, MeshBuilder, Scene, StandardMaterial, Vector3, Viewport } from "babylonjs";
 import { animatedStandardMaterial } from "../helpers/sprite_generator";
 import { CHARACTER_SPEED, GameState } from "../defs";
 import { Entity, InputController } from ".";
@@ -24,8 +24,6 @@ export default class extends Entity {
         super(scene, state, `player${playerNumber}`, `character${playerNumber}`, defaultPosX, defaultPosY);
 
         this.playerNumber = playerNumber;
-
-        if (state.isTwoPlayer) { }
     }
 
     private async setupCamera() {
@@ -41,6 +39,12 @@ export default class extends Entity {
         this.camera.noRotationConstraint = true;
         this.camera.maxCameraSpeed = 1;
         this.camera.lockedTarget = this.mesh;
+
+        if (this.state.isTwoPlayer) {
+            this.camera.viewport = new Viewport(this.playerNumber === 1 ? 0 : 0.5, 0, 0.5, 1);
+            this.camera.layerMask = this.playerNumber;
+            this.scene.activeCameras?.unshift(this.camera);
+        }
     }
 
     protected init() {
@@ -60,11 +64,12 @@ export default class extends Entity {
         }
     }
 
-    protected override updatePosition(): void {
+    protected override async updatePosition() {
         if (!this.scene || !this.mesh || !this.playerNumber) return;
 
         if (!this.input) {
-            this.input = new InputController(this.scene, this.playerNumber);
+            await this.scene.whenReadyAsync();
+            this.input = new InputController(this.scene, this.playerNumber ?? 1);
         }
 
         const dt = this.scene.getEngine().getDeltaTime() / 1000;

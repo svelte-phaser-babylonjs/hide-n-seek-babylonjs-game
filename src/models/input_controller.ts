@@ -25,7 +25,9 @@ export default class {
             right: playerNumber === 1 ? "d" : "ArrowRight",
         };
 
-        this.scene.actionManager = new ActionManager(scene);
+        if (!this.scene.actionManager) {
+            this.scene.actionManager = new ActionManager(scene);
+        }
 
         this.scene.actionManager.registerAction(
             new ExecuteCodeAction(ActionManager.OnKeyDownTrigger, event => {
