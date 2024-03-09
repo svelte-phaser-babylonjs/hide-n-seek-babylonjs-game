@@ -9,7 +9,8 @@ export default class {
     // UI components
     private texture!: AdvancedDynamicTexture;
     private timer!: TextBlock;
-    private score!: TextBlock;
+    private score1!: TextBlock;
+    private score2!: TextBlock;
     private modal!: Rectangle;
     private resumeBtn!: Button;
     private exitBtn!: Button;
@@ -63,8 +64,18 @@ export default class {
         this.scene.registerBeforeRender(() => {
             if (state.isPaused) return;
 
-            if (this.score) {
-                this.score.text = `${state.score1} / 10`;
+            if (this.score1) {
+                this.score1.text = `${state.score1} / 10`;
+            }
+
+            if (this.score2) {
+                this.score2.text = `${state.score2} / 10`;
+            }
+
+            if (state.score1 + state.score2 === state.winScore) {
+                setTimeout(() => {
+                    state.isGameOver = true;
+                }, 200);
             }
 
             this.updateHud();
@@ -89,11 +100,23 @@ export default class {
         const rabbitImage = await image("rabit-img", "assets/textures/UI/level1.svg", 0.1, 0.1, 0, 0, Control.HORIZONTAL_ALIGNMENT_LEFT, Control.VERTICAL_ALIGNMENT_TOP);
         this.texture.addControl(rabbitImage);
 
-        this.score = await simpleTextBlock('rabbit-counter', `${state.score1} / 10`, "yellow", FONT_SIZE_PERCENTAGE, 0.1, 0, Control.VERTICAL_ALIGNMENT_TOP);
-        this.score.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
-        this.score.leftInPixels = 0.08 * window.innerWidth;
-        this.score.width = 0.25;
-        this.texture.addControl(this.score);
+        this.score1 = await simpleTextBlock('rabbit-counter', `${state.score1} / 10`, "yellow", FONT_SIZE_PERCENTAGE, 0.1, 0, Control.VERTICAL_ALIGNMENT_TOP);
+        this.score1.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        this.score1.leftInPixels = 0.08 * window.innerWidth;
+        this.score1.width = 0.25;
+        this.texture.addControl(this.score1);
+
+        if (state.isTwoPlayer) {
+            // rabit image for rabit counter
+            const rabbitImage = await image("rabit-img", "assets/textures/UI/level1.svg", 0.1, 0.1, 0, 0.90 * window.innerWidth, Control.HORIZONTAL_ALIGNMENT_LEFT, Control.VERTICAL_ALIGNMENT_TOP);
+            this.texture.addControl(rabbitImage);
+
+            this.score2 = await simpleTextBlock('rabbit-counter', `${state.score2} / 10`, "yellow", FONT_SIZE_PERCENTAGE, 0.1, 0, Control.VERTICAL_ALIGNMENT_TOP);
+            this.score2.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+            this.score2.leftInPixels = 0.7 * window.innerWidth;
+            this.score2.width = 0.25;
+            this.texture.addControl(this.score2);
+        }
 
         this.modal = await rectangle("pause-modal", 1, 1, 0, "black");
         this.modal.zIndex = 3;
@@ -131,7 +154,7 @@ export default class {
 
         window.addEventListener("resize", () => {
             this.timer.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
-            this.score.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
+            this.score1.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
             this.resumeBtn.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
             this.exitBtn.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
         });
