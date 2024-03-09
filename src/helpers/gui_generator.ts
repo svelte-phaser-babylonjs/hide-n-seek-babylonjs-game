@@ -1,5 +1,22 @@
-import { Button, Image, TextBlock } from "babylonjs-gui";
+import { Button, Image, Rectangle, TextBlock } from "babylonjs-gui";
 import { changeControlFont } from "./utils";
+
+export async function rectangle(
+    name: string,
+    width: number,
+    height: number,
+    thickness: number,
+    bgColor: string
+): Promise<Rectangle> {
+    const rectangle = new Rectangle(name);
+
+    rectangle.width = width;
+    rectangle.height = height;
+    rectangle.thickness = thickness;
+    rectangle.background = bgColor;
+
+    return rectangle;
+}
 
 export async function simpleButton(
     name: string,

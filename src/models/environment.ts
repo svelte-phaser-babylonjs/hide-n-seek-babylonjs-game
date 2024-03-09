@@ -1,17 +1,18 @@
 import { Color3, Color4, CubeTexture, MeshBuilder, ParticleSystem, Scene, StandardMaterial, Texture, Vector2, Vector3 } from "babylonjs";
 import { spriteMapGenerator, spriteMeshGenerator } from "../helpers/sprite_generator";
 import { Npc } from ".";
+import { GameState } from "../defs";
 
 export default class {
     private scene: Scene;
 
-    constructor(scene: Scene) {
+    constructor(scene: Scene, state: GameState) {
         this.scene = scene;
 
-        this.initMap();
+        this.initMap(state);
     }
 
-    private async initMap() {
+    private async initMap(state: GameState) {
         spriteMapGenerator(
             this.scene,
             "assets/textures/tile_map_texture.png",
@@ -47,7 +48,7 @@ export default class {
             const randomPosX = Math.random() * (16 - (-16)) + (-16);
             const randomPosY = Math.random() * (16 - (-16)) + (-16);
 
-            new Npc(this.scene, `npc-${i}`, "rabbit", randomPosX, randomPosY);
+            new Npc(this.scene, state, `npc-${i}`, "rabbit", randomPosX, randomPosY);
         }
 
         const skybox = MeshBuilder.CreateBox("skybox", { size: 100 }, this.scene);

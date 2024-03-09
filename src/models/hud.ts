@@ -1,7 +1,7 @@
-import { Scene } from "babylonjs";
+import { KeyboardEventTypes, Scene } from "babylonjs";
 import { AdvancedDynamicTexture, Control, TextBlock } from "babylonjs-gui";
 import { image, simpleTextBlock } from "../helpers/gui_generator";
-import { FONT_SIZE_PERCENTAGE } from "../defs";
+import { FONT_SIZE_PERCENTAGE, GameState } from "../defs";
 
 export default class {
     private scene: Scene;
@@ -14,17 +14,17 @@ export default class {
     // Timer components
     private counter = 60;
 
-    constructor(scene: Scene) {
+    constructor(scene: Scene, state: GameState) {
         this.scene = scene;
 
-        this.setupUI();
+        this.setupUI(state);
 
         this.scene.registerBeforeRender(() => {
-            this.updateHud();
+            this.updateHud(state);
         })
     }
 
-    private async setupUI() {
+    private async setupUI(state: GameState) {
         this.texture = AdvancedDynamicTexture.CreateFullscreenUI("hud-texture", true, this.scene);
 
         this.timer = await simpleTextBlock("timer", "1:00", "yellow", FONT_SIZE_PERCENTAGE, 0.1, 0, Control.VERTICAL_ALIGNMENT_TOP);
@@ -40,6 +40,16 @@ export default class {
         this.rabbitCounter.width = 0.25;
         this.texture.addControl(this.rabbitCounter);
 
+        this.scene.onKeyboardObservable.add((kbInfo) => {
+            if (kbInfo.type === KeyboardEventTypes.KEYUP) {
+                switch (kbInfo.event.key) {
+                    case "Escape":
+                        state.isPaused = !state.isPaused;
+                        break;
+                }
+            }
+        })
+
         window.addEventListener("resize", () => {
             this.timer.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
             this.rabbitCounter.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
@@ -52,8 +62,8 @@ export default class {
         return String(Math.round(this.counter));
     }
 
-    private async updateHud() {
-        if (!this.scene) return;
+    private async updateHud(state: GameState) {
+        if (!this.scene || state.isPaused) return;
 
         const dt = this.scene.getEngine().getDeltaTime() / 1000;
 

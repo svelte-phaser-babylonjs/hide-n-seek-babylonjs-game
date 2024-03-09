@@ -1,12 +1,13 @@
 import { DirectionalLight, FreeCamera, Scene, Vector3 } from "babylonjs";
 import { Game } from "../Game";
 import { Character, Environment, Hud } from "../models";
+import { GameState } from "../defs";
 
 let levelScene: Scene | null = null;
 
 export async function initLevel1(this: Game) {
     levelScene = new Scene(this.engine);
-    this.environment = new Environment(levelScene);
+    this.environment = new Environment(levelScene, this.gameState);
 }
 
 export async function disposeLevel1(this: Game) {
@@ -17,13 +18,12 @@ export async function level1(this: Game) {
     this.scene!.detachControl();
     this.engine.displayLoadingUI();
 
-    if (!levelScene) {
+    if (!levelScene || !this.environment) {
         await initLevel1.call(this);
     }
 
     await createLevel.call(this);
-
-    await makeHud();
+    await makeHud(this.gameState);
 
     await this.scene!.whenReadyAsync();
 
@@ -37,9 +37,9 @@ async function createLevel(this: Game) {
     const light = new DirectionalLight("light", new Vector3(0, 1, 1), levelScene!);
     light.intensity = 0.4;
 
-    this.characterController = new Character(levelScene!, "player1", "character1", 0, 0);
+    this.characterController = new Character(levelScene!, this.gameState, "player1", "character1", 0, 0);
 }
 
-async function makeHud() {
-    await new Hud(levelScene!);
+async function makeHud(state: GameState) {
+    await new Hud(levelScene!, state);
 }

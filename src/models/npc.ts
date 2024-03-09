@@ -29,7 +29,6 @@ export default class NpcController extends Entity {
                 const randomPosY = Math.random() * (16 - (-16)) + (-16);
 
                 this.position = new Vector3(randomPosX, randomPosY, 0);
-
             }
         }, 3000)
     }

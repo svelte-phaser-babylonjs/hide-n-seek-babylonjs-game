@@ -1,13 +1,5 @@
 import { Mesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from "babylonjs";
-import { animatedStandardMaterial } from "../helpers/sprite_generator";
-
-type AnimationsType = {
-    watching: StandardMaterial | null,
-    moving_left: StandardMaterial | null,
-    moving_right: StandardMaterial | null,
-    moving_up: StandardMaterial | null,
-    moving_down: StandardMaterial | null,
-};
+import { AnimationsType, GameState } from "../defs";
 
 export default abstract class {
     protected scene: Scene;
@@ -23,7 +15,7 @@ export default abstract class {
         moving_down: null,
     };
 
-    constructor(scene: Scene, name: string, type: string, defaultPosX: number, defaultPosY: number) {
+    constructor(scene: Scene, state: GameState, name: string, type: string, defaultPosX: number, defaultPosY: number) {
         this.scene = scene;
         this.name = name;
         this.type = type;
@@ -34,6 +26,8 @@ export default abstract class {
         this.init();
 
         this.scene.registerBeforeRender(() => {
+            if (state.isPaused) return;
+
             this.updatePosition();
             this.updateAnimations();
         });

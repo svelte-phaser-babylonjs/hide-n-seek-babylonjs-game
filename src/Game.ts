@@ -3,15 +3,18 @@ import { mainMenu, soloMenu, start } from './states';
 import { Engine, Scene } from 'babylonjs';
 import { disposeLevel1, initLevel1, level1 } from './states/level1';
 import { Character, Environment } from './models';
+import { GameState } from './defs';
 
 export class Game {
     engine: Engine;
 
     scene: Scene | null = null;
-
     environment: Environment | null = null;
-
     characterController: Character | null = null;
+
+    gameState: GameState = {
+        isPaused: false,
+    }
 
     // states
     protected gotoStart = start;
