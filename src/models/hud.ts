@@ -1,6 +1,6 @@
 import { KeyboardEventTypes, Scene } from "babylonjs";
-import { AdvancedDynamicTexture, Control, TextBlock } from "babylonjs-gui";
-import { image, simpleTextBlock } from "../helpers/gui_generator";
+import { AdvancedDynamicTexture, Button, Control, TextBlock } from "babylonjs-gui";
+import { image, rectangle, simpleButton, simpleTextBlock } from "../helpers/gui_generator";
 import { FONT_SIZE_PERCENTAGE, GameState } from "../defs";
 
 export default class {
@@ -10,6 +10,7 @@ export default class {
     private texture!: AdvancedDynamicTexture;
     private timer!: TextBlock;
     private rabbitCounter!: TextBlock;
+    private resumeBtn!: Button;
 
     // Timer components
     private counter = 60;
@@ -42,11 +43,28 @@ export default class {
         this.rabbitCounter.width = 0.25;
         this.texture.addControl(this.rabbitCounter);
 
+        const modal = await rectangle("pause-modal", 1, 1, 0, "black");
+        modal.zIndex = 3;
+        modal.alpha = 0.3;
+        modal.isVisible = false;
+        this.texture.addControl(modal);
+
+        this.resumeBtn = await simpleButton("resume-pause-btn", "Resume", FONT_SIZE_PERCENTAGE, 0.1, -(window.innerHeight / 20), Control.VERTICAL_ALIGNMENT_CENTER);
+
+        this.resumeBtn.isVisible = state.isPaused;
+        this.resumeBtn.zIndex = 5;
+        this.resumeBtn.onPointerClickObservable.add(() => {
+            state.isPaused = !state.isPaused;
+            this.resumeBtn.isVisible = state.isPaused;
+        });
+        this.texture.addControl(this.resumeBtn);
+
         this.scene.onKeyboardObservable.add((kbInfo) => {
             if (kbInfo.type === KeyboardEventTypes.KEYUP) {
                 switch (kbInfo.event.key) {
                     case "Escape":
                         state.isPaused = !state.isPaused;
+                        this.resumeBtn.isVisible = state.isPaused;
                         break;
                 }
             }
