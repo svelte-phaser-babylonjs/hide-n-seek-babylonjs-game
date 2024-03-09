@@ -9,7 +9,7 @@ export default class {
     // UI components
     private texture!: AdvancedDynamicTexture;
     private timer!: TextBlock;
-    private rabbitCounter!: TextBlock;
+    private score!: TextBlock;
     private modal!: Rectangle;
     private resumeBtn!: Button;
     private exitBtn!: Button;
@@ -39,11 +39,11 @@ export default class {
         const rabbitImage = await image("rabit-img", "assets/textures/UI/level1.svg", 0.1, 0.1, 0, 0, Control.HORIZONTAL_ALIGNMENT_LEFT, Control.VERTICAL_ALIGNMENT_TOP);
         this.texture.addControl(rabbitImage);
 
-        this.rabbitCounter = await simpleTextBlock('rabbit-counter', "0 / 10", "yellow", FONT_SIZE_PERCENTAGE, 0.1, 0, Control.VERTICAL_ALIGNMENT_TOP);
-        this.rabbitCounter.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
-        this.rabbitCounter.leftInPixels = 0.04 * window.innerWidth;
-        this.rabbitCounter.width = 0.25;
-        this.texture.addControl(this.rabbitCounter);
+        this.score = await simpleTextBlock('rabbit-counter', "0 / 10", "yellow", FONT_SIZE_PERCENTAGE, 0.1, 0, Control.VERTICAL_ALIGNMENT_TOP);
+        this.score.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        this.score.leftInPixels = 0.04 * window.innerWidth;
+        this.score.width = 0.25;
+        this.texture.addControl(this.score);
 
         this.modal = await rectangle("pause-modal", 1, 1, 0, "black");
         this.modal.zIndex = 3;
@@ -81,7 +81,7 @@ export default class {
 
         window.addEventListener("resize", () => {
             this.timer.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
-            this.rabbitCounter.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
+            this.score.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
             this.resumeBtn.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
             this.exitBtn.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
         });
