@@ -1,5 +1,5 @@
-import { KeyboardEventTypes, Scene } from "babylonjs";
-import { AdvancedDynamicTexture, Button, Control, Rectangle, TextBlock } from "babylonjs-gui";
+import { KeyboardEventTypes, Mesh, Scene } from "babylonjs";
+import { AdvancedDynamicTexture, Button, Control, Ellipse, Rectangle, TextBlock } from "babylonjs-gui";
 import { image, rectangle, simpleButton, simpleTextBlock } from "../helpers/gui_generator";
 import { FONT_SIZE_PERCENTAGE, GameState } from "../defs";
 
@@ -13,14 +13,51 @@ export default class {
     private modal!: Rectangle;
     private resumeBtn!: Button;
     private exitBtn!: Button;
+    private state: GameState;
+
+    public destroyMesh: ((mesh: Mesh) => void) | null;
 
     // Timer components
     private counter = 60;
 
     constructor(scene: Scene, state: GameState) {
         this.scene = scene;
+        this.state = state;
 
         this.setupUI(state);
+
+        this.destroyMesh = async (mesh: Mesh) => {
+            await scene.whenReadyAsync();
+
+            const feedback = new Ellipse();
+            feedback.widthInPixels = 40;
+            feedback.heightInPixels = 40;
+            feedback.background = "white";
+
+            this.texture.addControl(feedback);
+
+            feedback.linkWithMesh(mesh);
+
+            setTimeout(() => {
+                feedback.linkWithMesh(null);
+
+                const distanceX = feedback.leftInPixels / 30;
+                const distanceY = feedback.topInPixels / 30;
+
+                const dt = scene ? scene.getEngine().getDeltaTime() / 1000 : 0;
+
+                const interval = setInterval(() => {
+                    if (feedback.leftInPixels > 0) {
+                        feedback.leftInPixels -= distanceX;
+                        feedback.topInPixels -= distanceY;
+                    } else {
+                        clearInterval(interval);
+                        feedback.dispose();
+                        mesh.dispose();
+                    }
+                }, dt);
+            }, 250);
+        }
 
         this.scene.registerBeforeRender(() => {
             if (state.isPaused) return;

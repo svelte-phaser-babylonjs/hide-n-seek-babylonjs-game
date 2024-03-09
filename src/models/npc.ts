@@ -25,11 +25,21 @@ export default class extends Entity {
 
             if (intersct1 && !this.isAlreadyColliding) {
                 this.isAlreadyColliding = true;
-                this.mesh.dispose();
+                this.mesh.isVisible = false;
+
+                if (this.state.destroyMesh) {
+                    this.state.destroyMesh(this.mesh);
+                }
+
                 this.state.score1 += 1;
             } else if (intersct2 && !this.isAlreadyColliding) {
                 this.isAlreadyColliding = true;
-                this.mesh.dispose();
+                this.mesh.isVisible = false;
+
+                if (this.state.destroyMesh) {
+                    this.state.destroyMesh(this.mesh);
+                }
+
                 this.state.score2 += 1;
             }
         });

@@ -17,6 +17,8 @@ export class Game {
         isExited: false,
         score1: 0,
         score2: 0,
+
+        destroyMesh: null,
     }
 
     // states
@@ -53,5 +55,6 @@ export class Game {
         this.gameState.isExited = false;
         this.gameState.score1 = 0;
         this.gameState.score2 = 0;
+        this.gameState.destroyMesh = null;
     }
 }

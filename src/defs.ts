@@ -1,4 +1,4 @@
-import { StandardMaterial } from "babylonjs";
+import { Mesh, StandardMaterial } from "babylonjs";
 
 export const CHARACTER_SPEED: number = 9;
 export const NPC_SPEED: number = 12;
@@ -17,4 +17,5 @@ export type GameState = {
     isExited: boolean;
     score1: number;
     score2: number;
+    destroyMesh: ((mesh: Mesh) => void) | null;
 }
