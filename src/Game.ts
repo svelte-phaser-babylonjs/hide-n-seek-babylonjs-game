@@ -1,5 +1,5 @@
 import 'babylonjs-loaders';
-import { lose, mainMenu, multiMenu, soloMenu, start, win } from './states';
+import { gameFinished, mainMenu, multiMenu, soloMenu, start } from './states';
 import { Engine, Scene } from 'babylonjs';
 import { disposeLevel1, initLevel1, level1 } from './states/level1';
 import { Character, Environment } from './models';
@@ -10,16 +10,18 @@ export class Game {
 
     scene: Scene | null = null;
     environment: Environment | null = null;
-    characterController: Character | null = null;
+    characterController: Character[] = [];
 
     gameState: GameState = {
         isPaused: false,
         isExited: false,
         score1: 0,
         score2: 0,
+        winScore: 0,
 
         destroyMesh: null,
-        state: 'on-going',
+        isGameOver: false,
+        isTwoPlayer: false,
     }
 
     // states
@@ -27,8 +29,7 @@ export class Game {
     protected gotoMainMenu = mainMenu;
     protected gotoSoloMenu = soloMenu;
     protected gotoMultiMenu = multiMenu;
-    protected goToWin = win;
-    protected goToLose = lose;
+    protected goToGameFinished = gameFinished;
 
     protected gotoLevel1 = level1;
     protected setupLevel1 = initLevel1;
@@ -61,7 +62,9 @@ export class Game {
         this.gameState.isExited = false;
         this.gameState.score1 = 0;
         this.gameState.score2 = 0;
+        this.gameState.winScore = 0;
         this.gameState.destroyMesh = null;
-        this.gameState.state = 'on-going';
+        this.gameState.isGameOver = false;
+        this.gameState.isTwoPlayer = false;
     }
 }

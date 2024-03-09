@@ -31,15 +31,14 @@ export default abstract class {
 
             await this.scene!.whenReadyAsync();
             this.isReady = true;
-
-            this.scene.registerBeforeRender(() => {
-                if (state.isPaused) return;
-
-                this.updatePosition();
-                this.updateAnimations();
-            });
         });
 
+        this.scene.registerBeforeRender(() => {
+            if (state.isPaused) return;
+
+            this.updatePosition();
+            this.updateAnimations();
+        });
     }
 
     protected abstract init(): void;

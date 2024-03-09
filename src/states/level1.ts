@@ -5,20 +5,19 @@ import { GameState } from "../defs";
 
 let levelScene: Scene | null = null;
 
-let winScore = 10;
+const winScore = 10;
 
 export async function initLevel1(this: Game) {
+    this.gameState.winScore = winScore;
+
     levelScene = new Scene(this.engine);
     this.environment = new Environment(levelScene, this.gameState, winScore);
 
     levelScene.registerBeforeRender(() => {
         if (this.gameState.isExited) this.gotoMainMenu();
-        if (this.gameState.score1 === winScore) {
-            this.gameState.state = 'on-going';
-            this.goToWin();
-        } else if (this.gameState.state === 'lose') {
-            this.gameState.state = 'on-going';
-            this.goToLose();
+        if (this.gameState.score1 === winScore || this.gameState.score2 === winScore || this.gameState.isGameOver) {
+            this.gameState.isGameOver = false;
+            this.goToGameFinished();
         }
     });
 }
@@ -50,7 +49,11 @@ async function createLevel(this: Game) {
     const light = new DirectionalLight("light", new Vector3(0, 1, 1), levelScene!);
     light.intensity = 0.4;
 
-    this.characterController = new Character(levelScene!, this.gameState, "player1", "character1", 0, 0);
+    this.characterController[0] = new Character(levelScene!, this.gameState, 1, 0, 0);
+
+    if (this.gameState.isTwoPlayer) {
+        this.characterController[1] = new Character(levelScene!, this.gameState, 2, 0, 0);
+    }
 }
 
 async function makeHud(state: GameState) {

@@ -18,7 +18,9 @@ export type GameState = {
     isExited: boolean;
     score1: number;
     score2: number;
+    winScore: number;
     destroyMesh: ((mesh: Mesh) => void) | null;
 
-    state: 'on-going' | 'lose'
+    isGameOver: boolean;
+    isTwoPlayer: boolean;
 }

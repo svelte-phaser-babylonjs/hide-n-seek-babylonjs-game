@@ -13,8 +13,17 @@ export default class {
     public hAxis: number = 0;
     public vAxis: number = 0;
 
-    constructor(scene: Scene) {
+    private keyMap: any = {};
+
+    constructor(scene: Scene, playerNumber: number) {
         this.scene = scene;
+
+        this.keyMap = {
+            up: playerNumber === 1 ? "w" : "ArrowUp",
+            down: playerNumber === 1 ? "s" : "ArrowDown",
+            left: playerNumber === 1 ? "a" : "ArrowLeft",
+            right: playerNumber === 1 ? "d" : "ArrowRight",
+        };
 
         this.scene.actionManager = new ActionManager(scene);
 
@@ -36,10 +45,12 @@ export default class {
     }
 
     updateFromKeyboard() {
-        if (this.inputMap["w"]) {
+        if (!this.keyMap) return;
+
+        if (this.inputMap[this.keyMap.up]) {
             this.vAxis = 1;
             this.vertical = Scalar.Lerp(this.vertical, 1, 0.2);
-        } else if (this.inputMap["s"]) {
+        } else if (this.inputMap[this.keyMap.down]) {
             this.vAxis = -1;
             this.vertical = Scalar.Lerp(this.vertical, -1, 0.2);
         } else {
@@ -47,10 +58,10 @@ export default class {
             this.vertical = 0;
         }
 
-        if (this.inputMap["a"]) {
+        if (this.inputMap[this.keyMap.left]) {
             this.hAxis = -1;
             this.horizontal = Scalar.Lerp(this.horizontal, -1, 0.2);
-        } else if (this.inputMap["d"]) {
+        } else if (this.inputMap[this.keyMap.right]) {
             this.hAxis = 1;
             this.horizontal = Scalar.Lerp(this.horizontal, 1, 0.2);
         } else {

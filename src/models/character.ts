@@ -1,6 +1,6 @@
 import { DirectionalLight, FollowCamera, Mesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from "babylonjs";
 import { animatedStandardMaterial } from "../helpers/sprite_generator";
-import { CHARACTER_SPEED } from "../defs";
+import { CHARACTER_SPEED, GameState } from "../defs";
 import { Entity, InputController } from ".";
 
 type AnimationsType = {
@@ -18,6 +18,15 @@ export default class extends Entity {
 
     // Character movement components
     private inputAmt!: number;
+    private playerNumber: number;
+
+    constructor(scene: Scene, state: GameState, playerNumber: number, defaultPosX: number, defaultPosY: number) {
+        super(scene, state, `player${playerNumber}`, `character${playerNumber}`, defaultPosX, defaultPosY);
+
+        this.playerNumber = playerNumber;
+
+        if (state.isTwoPlayer) { }
+    }
 
     private async setupCamera() {
         const light = new DirectionalLight("light", new Vector3(0, 1, 1), this.scene);
@@ -52,10 +61,10 @@ export default class extends Entity {
     }
 
     protected override updatePosition(): void {
-        if (!this.scene || !this.mesh) return;
+        if (!this.scene || !this.mesh || !this.playerNumber) return;
 
         if (!this.input) {
-            this.input = new InputController(this.scene);
+            this.input = new InputController(this.scene, this.playerNumber);
         }
 
         const dt = this.scene.getEngine().getDeltaTime() / 1000;

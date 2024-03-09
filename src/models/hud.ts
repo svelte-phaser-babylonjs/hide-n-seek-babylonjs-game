@@ -131,7 +131,7 @@ export default class {
 
     private async formatTime() {
         if (this.counter < 0) {
-            this.state.state = 'lose';
+            this.state.isGameOver = 'lose';
             return "0";
         }
 

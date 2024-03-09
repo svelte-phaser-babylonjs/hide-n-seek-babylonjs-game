@@ -43,6 +43,7 @@ const createGUI = async function (this: Game, scene: Scene, message: string) {
     grid.addColumnDefinition(1);
     grid.addRowDefinition(0.5);
     grid.addRowDefinition(0.5);
+    grid.addRowDefinition(0.5);
     grid.addRowDefinition(0.4);
     guiMenu.addControl(grid);
 
@@ -50,12 +51,18 @@ const createGUI = async function (this: Game, scene: Scene, message: string) {
     text.textWrapping = true;
     grid.addControl(text, 0, 0);
 
-    const score = await simpleTextBlock("message-score-node", `Score: ${this.gameState.score1}`, "white", FONT_SIZE_PERCENTAGE * 1.5, 0.5, 0, Control.VERTICAL_ALIGNMENT_CENTER);
+    const score = await simpleTextBlock("message-score-node", `Player1 Score: ${this.gameState.score1}`, "white", FONT_SIZE_PERCENTAGE * 1.5, 0.5, 0, Control.VERTICAL_ALIGNMENT_CENTER);
     score.textWrapping = true;
     grid.addControl(score, 1, 0);
 
+    if (this.gameState.isTwoPlayer) {
+        const score = await simpleTextBlock("message-score2-node", `Player2 Score: ${this.gameState.score2}`, "white", FONT_SIZE_PERCENTAGE * 1.5, 0.5, 0, Control.VERTICAL_ALIGNMENT_CENTER);
+        score.textWrapping = true;
+        grid.addControl(score, 2, 0);
+    }
+
     const backBtn = await simpleButton('back-btn', 'Back to Menu', FONT_SIZE_PERCENTAGE / 2, 0.2, -(window.innerHeight / 10), Control.VERTICAL_ALIGNMENT_BOTTOM);
-    grid.addControl(backBtn, 2, 0);
+    grid.addControl(backBtn, 3, 0);
 
     backBtn.onPointerClickObservable.add(() => {
         // change the scene to main menu
@@ -63,8 +70,26 @@ const createGUI = async function (this: Game, scene: Scene, message: string) {
     });
 }
 
-const createScreen = async function (this: Game, win: boolean) {
-    const message = win ? 'Congratulations You Won!' : 'Oh oh! You Lose!';
+export default async function (this: Game) {
+    let message: string = "Game Over";
+
+    if (!this.gameState.isTwoPlayer) {
+        if (this.gameState.score1 === this.gameState.winScore) {
+            message = "You Won! Congratulations!"
+        }
+    } else {
+        if (this.gameState.score1 > this.gameState.score2) {
+            message = "Player1 Won!"
+        } else if (this.gameState.score2 > this.gameState.score1) {
+            message = "Player2 Won!"
+        } else {
+            message = "Game is Tie!"
+        }
+
+        if (this.gameState.score1 === this.gameState.winScore || this.gameState.score2 === this.gameState.winScore) {
+            message += " Caught All!"
+        }
+    }
 
     this.scene!.detachControl();
     this.engine.displayLoadingUI();
@@ -79,12 +104,4 @@ const createScreen = async function (this: Game, win: boolean) {
     this.engine.hideLoadingUI();
     this.scene!.dispose();
     this.scene = sceneToLoad;
-}
-
-export default async function (this: Game) {
-    await createScreen.call(this, true);
-}
-
-export async function lose(this: Game) {
-    await createScreen.call(this, false);
 }
