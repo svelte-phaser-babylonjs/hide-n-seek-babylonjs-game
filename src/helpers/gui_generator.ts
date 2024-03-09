@@ -1,7 +1,14 @@
-import { Button, TextBlock } from "babylonjs-gui";
+import { Button, Image, TextBlock } from "babylonjs-gui";
 import { changeControlFont } from "./utils";
 
-export async function simpleButton(name: string, text: string, fontSizePercentage: number, height: number, top: number, verticalAlign: number): Promise<Button> {
+export async function simpleButton(
+    name: string,
+    text: string,
+    fontSizePercentage: number,
+    height: number,
+    top: number,
+    verticalAlign: number
+): Promise<Button> {
     const btn = Button.CreateSimpleButton(name, text);
 
     btn.color = "white";
@@ -26,7 +33,38 @@ export async function simpleButton(name: string, text: string, fontSizePercentag
     return btn;
 }
 
-export async function imageButton(name: string, text: string, spriteUrl: string, fontSizePercentage: number, height: number, top: number, verticalAlign: number): Promise<Button> {
+export async function image(
+    name: string,
+    textureUrl: string,
+    width: number,
+    height: number,
+    top: number,
+    left: number,
+    horizontalAlignment: number,
+    verticalAlign: number
+): Promise<Image> {
+    const image = new Image(name, textureUrl);
+
+    image.width = width;
+    image.height = height;
+    image.top = top;
+    image.left = left;
+
+    image.horizontalAlignment = horizontalAlignment;
+    image.verticalAlignment = verticalAlign;
+
+    return image;
+}
+
+export async function imageButton(
+    name: string,
+    text: string,
+    spriteUrl: string,
+    fontSizePercentage: number,
+    height: number,
+    top: number,
+    verticalAlign: number
+): Promise<Button> {
     const btn = Button.CreateImageButton(name, text, spriteUrl);
 
     btn.color = "white";
