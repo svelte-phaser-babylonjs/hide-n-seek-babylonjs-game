@@ -1,6 +1,6 @@
 import { Scene } from "babylonjs";
 import { AdvancedDynamicTexture, Control, TextBlock } from "babylonjs-gui";
-import { simpleTextBlock } from "../helpers/gui_generator";
+import { image, simpleTextBlock } from "../helpers/gui_generator";
 import { FONT_SIZE_PERCENTAGE } from "../defs";
 
 export default class {
@@ -9,6 +9,7 @@ export default class {
     // UI components
     private texture!: AdvancedDynamicTexture;
     private timer!: TextBlock;
+    private rabbitCounter!: TextBlock;
 
     // Timer components
     private counter = 60;
@@ -25,11 +26,23 @@ export default class {
 
     private async setupUI() {
         this.texture = AdvancedDynamicTexture.CreateFullscreenUI("hud-texture", true, this.scene);
+
         this.timer = await simpleTextBlock("timer", "1:00", "yellow", FONT_SIZE_PERCENTAGE, 0.1, 0, Control.VERTICAL_ALIGNMENT_TOP);
         this.texture.addControl(this.timer);
 
+        // rabit image for rabit counter
+        const rabbitImage = await image("rabit-img", "assets/textures/UI/level1.svg", 0.1, 0.1, 0, 0, Control.HORIZONTAL_ALIGNMENT_LEFT, Control.VERTICAL_ALIGNMENT_TOP);
+        this.texture.addControl(rabbitImage);
+
+        this.rabbitCounter = await simpleTextBlock('rabbit-counter', "0 / 10", "yellow", FONT_SIZE_PERCENTAGE, 0.1, 0, Control.VERTICAL_ALIGNMENT_TOP);
+        this.rabbitCounter.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+        this.rabbitCounter.leftInPixels = 0.04 * window.innerWidth;
+        this.rabbitCounter.width = 0.25;
+        this.texture.addControl(this.rabbitCounter);
+
         window.addEventListener("resize", () => {
             this.timer.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
+            this.rabbitCounter.fontSizeInPixels = ((window.innerWidth + window.innerHeight) / 2) * FONT_SIZE_PERCENTAGE;
         })
     }
 

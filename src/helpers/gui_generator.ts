@@ -50,6 +50,8 @@ export async function image(
     image.top = top;
     image.left = left;
 
+    image.stretch = Image.STRETCH_UNIFORM;
+
     image.horizontalAlignment = horizontalAlignment;
     image.verticalAlignment = verticalAlign;
 
