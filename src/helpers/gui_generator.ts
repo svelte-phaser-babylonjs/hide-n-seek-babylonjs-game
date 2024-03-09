@@ -1,14 +1,14 @@
 import { Button, TextBlock } from "babylonjs-gui";
 import { changeControlFont } from "./utils";
 
-export async function simpleButton(name: string, text: string, FONT_SIZE_PERCENTAGE: number, height: number, top: number, verticalAlign: number): Promise<Button> {
+export async function simpleButton(name: string, text: string, fontSizePercentage: number, height: number, top: number, verticalAlign: number): Promise<Button> {
     const btn = Button.CreateSimpleButton(name, text);
 
     btn.color = "white";
     changeControlFont('14px bongkar', btn);
 
     btn.height = height;
-    btn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * FONT_SIZE_PERCENTAGE;
+    btn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * fontSizePercentage;
     btn.thickness = 0;
 
     btn.top = top;
@@ -26,7 +26,7 @@ export async function simpleButton(name: string, text: string, FONT_SIZE_PERCENT
     return btn;
 }
 
-export async function imageButton(name: string, text: string, spriteUrl: string, FONT_SIZE_PERCENTAGE: number, height: number, top: number, verticalAlign: number): Promise<Button> {
+export async function imageButton(name: string, text: string, spriteUrl: string, fontSizePercentage: number, height: number, top: number, verticalAlign: number): Promise<Button> {
     const btn = Button.CreateImageButton(name, text, spriteUrl);
 
     btn.color = "white";
@@ -34,7 +34,7 @@ export async function imageButton(name: string, text: string, spriteUrl: string,
     changeControlFont('14px bongkar', btn);
 
     btn.height = height;
-    btn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * FONT_SIZE_PERCENTAGE;
+    btn.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * fontSizePercentage;
     btn.thickness = 0;
 
     btn.top = top;
