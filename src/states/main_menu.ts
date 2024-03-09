@@ -113,7 +113,7 @@ async function createGUI(this: Game, scene: Scene) {
 
     const multiBtn = await simpleButton('multi-btn', 'Multiplayer', FONT_SIZE_PERCENTAGE, 0.12, -((window.innerHeight / 20) * 3.5), Control.VERTICAL_ALIGNMENT_BOTTOM);
     multiBtn.onPointerClickObservable.add(() => {
-
+        this.gotoMultiMenu();
     });
     guiMenu.addControl(multiBtn);
 

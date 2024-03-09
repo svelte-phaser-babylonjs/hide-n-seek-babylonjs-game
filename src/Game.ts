@@ -1,5 +1,5 @@
 import 'babylonjs-loaders';
-import { lose, mainMenu, soloMenu, start, win } from './states';
+import { lose, mainMenu, multiMenu, soloMenu, start, win } from './states';
 import { Engine, Scene } from 'babylonjs';
 import { disposeLevel1, initLevel1, level1 } from './states/level1';
 import { Character, Environment } from './models';
@@ -26,6 +26,7 @@ export class Game {
     protected gotoStart = start;
     protected gotoMainMenu = mainMenu;
     protected gotoSoloMenu = soloMenu;
+    protected gotoMultiMenu = multiMenu;
     protected goToWin = win;
     protected goToLose = lose;
 
