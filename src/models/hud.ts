@@ -1,7 +1,7 @@
 import { KeyboardEventTypes, Mesh, Scene } from "babylonjs";
 import { AdvancedDynamicTexture, Button, Control, Ellipse, Rectangle, TextBlock } from "babylonjs-gui";
 import { image, rectangle, simpleButton, simpleTextBlock } from "../helpers/gui_generator";
-import { FONT_SIZE_PERCENTAGE, GameState } from "../defs";
+import { CATCH_FEEDBACK_SPEED, FONT_SIZE_PERCENTAGE, GameState } from "../defs";
 
 export default class {
     private scene: Scene;
@@ -38,13 +38,14 @@ export default class {
 
             feedback.linkWithMesh(mesh);
 
+            const dt = scene.getEngine().getDeltaTime() / 1000;
+
             setTimeout(() => {
                 feedback.linkWithMesh(null);
 
-                const distanceX = feedback.leftInPixels / 30;
-                const distanceY = feedback.topInPixels / 30;
+                const distanceX = feedback.leftInPixels / CATCH_FEEDBACK_SPEED;
+                const distanceY = feedback.topInPixels / CATCH_FEEDBACK_SPEED;
 
-                const dt = scene ? scene.getEngine().getDeltaTime() / 1000 : 0;
 
                 const interval = setInterval(() => {
                     if (feedback.leftInPixels > 0) {

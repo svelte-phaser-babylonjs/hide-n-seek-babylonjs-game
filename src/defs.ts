@@ -2,6 +2,7 @@ import { Mesh, StandardMaterial } from "babylonjs";
 
 export const CHARACTER_SPEED: number = 9;
 export const NPC_SPEED: number = 12;
+export const CATCH_FEEDBACK_SPEED: number = 50;
 export const FONT_SIZE_PERCENTAGE = 0.06;
 
 export type AnimationsType = {
