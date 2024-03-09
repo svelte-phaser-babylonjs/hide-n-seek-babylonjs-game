@@ -1,6 +1,6 @@
 import { DirectionalLight, FreeCamera, Scene, Vector3 } from "babylonjs";
 import { Game } from "../Game";
-import { CharacterController, Environment } from "../models";
+import { Character, Environment } from "../models";
 
 let levelScene: Scene | null = null;
 
@@ -31,5 +31,5 @@ async function createLevel(this: Game) {
     const light = new DirectionalLight("light", new Vector3(0, 1, 1), levelScene!);
     light.intensity = 0.4;
 
-    this.characterController = new CharacterController(levelScene!);
+    this.characterController = new Character(levelScene!, "player1", "character1", 0, 0);
 }

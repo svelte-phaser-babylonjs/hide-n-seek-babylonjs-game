@@ -1,5 +1,6 @@
 import { Color3, Color4, CubeTexture, MeshBuilder, ParticleSystem, Scene, StandardMaterial, Texture, Vector2, Vector3 } from "babylonjs";
 import { spriteMapGenerator, spriteMeshGenerator } from "../helpers/sprite_generator";
+import { Npc } from ".";
 
 export default class {
     private scene: Scene;
@@ -39,6 +40,15 @@ export default class {
         const material5 = new StandardMaterial('statue', this.scene);
         const texture5 = new Texture("assets/textures/environment/statue.png", this.scene);
         await spriteMeshGenerator(this.scene, texture5, material5, "statue-mesh", -16, 16, -0.4, 1, 1, 5);
+
+
+        // NPCs
+        for (let i = 0; i < 10; ++i) {
+            const randomPosX = Math.random() * (16 - (-16)) + (-16);
+            const randomPosY = Math.random() * (16 - (-16)) + (-16);
+
+            new Npc(this.scene, `npc-${i}`, "rabbit", randomPosX, randomPosY);
+        }
 
         const skybox = MeshBuilder.CreateBox("skybox", { size: 100 }, this.scene);
         const skyboxMat = new StandardMaterial("skybox-mat", this.scene);
