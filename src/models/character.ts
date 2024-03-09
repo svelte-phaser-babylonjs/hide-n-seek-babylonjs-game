@@ -34,8 +34,8 @@ export default class extends Entity {
         this.camera.lockedTarget = this.mesh;
     }
 
-    protected async init() {
-        await this.setupCamera();
+    protected init() {
+        this.setupCamera();
     }
 
     protected override async setupAnimations(): Promise<void> {

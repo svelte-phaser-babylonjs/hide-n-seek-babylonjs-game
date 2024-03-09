@@ -27,7 +27,7 @@ export default abstract class {
         this.isReady = false;
 
         this.configCharacter(defaultPosX, defaultPosY).then(async () => {
-            await this.init();
+            this.init();
 
             await this.scene!.whenReadyAsync();
             this.isReady = true;
@@ -42,13 +42,13 @@ export default abstract class {
 
     }
 
-    protected abstract init(): Promise<void>;
+    protected abstract init(): void;
 
     protected abstract setupAnimations(): Promise<void>;
 
     protected async configCharacter(defaultPosX: number, defaultPosY: number): Promise<void> {
-        await this.setupMesh(defaultPosX, defaultPosY);
-        await this.setupAnimations();
+        this.setupAnimations();
+        this.setupMesh(defaultPosX, defaultPosY);
     }
 
     protected async setupMesh(defaultPosX: number, defaultPosY: number) {
