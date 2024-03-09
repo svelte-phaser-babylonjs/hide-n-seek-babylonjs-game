@@ -29,7 +29,8 @@ export default abstract class {
         this.configCharacter(defaultPosX, defaultPosY).then(async () => {
             await this.init();
 
-            setTimeout(() => this.isReady = true, 2000);
+            await this.scene!.whenReadyAsync();
+            this.isReady = true;
 
             this.scene.registerBeforeRender(() => {
                 if (state.isPaused) return;
