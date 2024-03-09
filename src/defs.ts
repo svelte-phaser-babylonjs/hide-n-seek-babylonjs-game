@@ -14,4 +14,5 @@ export type AnimationsType = {
 
 export type GameState = {
     isPaused: boolean;
+    isExited: boolean;
 }

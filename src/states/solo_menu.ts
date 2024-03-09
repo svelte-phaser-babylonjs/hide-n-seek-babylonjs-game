@@ -1,7 +1,7 @@
 import { ArcRotateCamera, Scene, Vector3 } from "babylonjs";
 import { Game } from "../Game";
 import { AdvancedDynamicTexture, Control, Grid, Image, Rectangle, ScrollViewer } from "babylonjs-gui";
-import { imageButton, simpleButton, simpleTextBlock } from "../helpers/gui_generator";
+import { imageButton, rectangle, simpleButton, simpleTextBlock } from "../helpers/gui_generator";
 import { FONT_SIZE_PERCENTAGE } from "../defs";
 
 const createCamera = function (scene: Scene) {
@@ -31,14 +31,11 @@ async function createModal(this: Game, container: AdvancedDynamicTexture) {
     containerGrid.zIndex = 5;
     container.addControl(containerGrid);
 
-    const modal = new Rectangle("modal");
+    const modal = await rectangle("modal", 1, 1, 0, "Black");
     modal.zIndex = 3;
-    modal.width = 1;
-    modal.height = 1;
-    modal.thickness = 0;
-    modal.background = "black";
     modal.alpha = 0.3;
     modal.isVisible = false;
+    container.addControl(modal);
 
     modal.onPointerClickObservable.add(async () => {
         containerGrid.isVisible = false;
@@ -46,7 +43,6 @@ async function createModal(this: Game, container: AdvancedDynamicTexture) {
 
         await this.removeLevel1();
     });
-    container.addControl(modal);
 
     const grid = new Grid();
     grid.background = "#64B1A2";

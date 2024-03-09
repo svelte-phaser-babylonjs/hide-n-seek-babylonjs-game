@@ -14,6 +14,7 @@ export class Game {
 
     gameState: GameState = {
         isPaused: false,
+        isExited: false,
     }
 
     // states

@@ -8,6 +8,10 @@ let levelScene: Scene | null = null;
 export async function initLevel1(this: Game) {
     levelScene = new Scene(this.engine);
     this.environment = new Environment(levelScene, this.gameState);
+
+    levelScene.registerBeforeRender(() => {
+        if (this.gameState.isExited) this.gotoMainMenu();
+    });
 }
 
 export async function disposeLevel1(this: Game) {
