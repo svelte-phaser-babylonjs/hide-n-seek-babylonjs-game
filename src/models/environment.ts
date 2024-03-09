@@ -45,8 +45,8 @@ export default class {
 
         // NPCs
         for (let i = 0; i < 10; ++i) {
-            const randomPosX = Math.random() * (16 - (-16)) + (-16);
-            const randomPosY = Math.random() * (16 - (-16)) + (-16);
+            const randomPosX = (Math.random() * 32) - 16;
+            const randomPosY = (Math.random() * 32) - 16;
 
             new Npc(this.scene, state, `npc-${i}`, "rabbit", randomPosX, randomPosY);
         }

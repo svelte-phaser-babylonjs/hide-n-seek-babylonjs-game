@@ -25,6 +25,10 @@ export default class {
         this.scene.registerBeforeRender(() => {
             if (state.isPaused) return;
 
+            if (this.score) {
+                this.score.text = `${state.score1} / 10`;
+            }
+
             this.updateHud();
         })
     }
@@ -39,7 +43,7 @@ export default class {
         const rabbitImage = await image("rabit-img", "assets/textures/UI/level1.svg", 0.1, 0.1, 0, 0, Control.HORIZONTAL_ALIGNMENT_LEFT, Control.VERTICAL_ALIGNMENT_TOP);
         this.texture.addControl(rabbitImage);
 
-        this.score = await simpleTextBlock('rabbit-counter', "0 / 10", "yellow", FONT_SIZE_PERCENTAGE, 0.1, 0, Control.VERTICAL_ALIGNMENT_TOP);
+        this.score = await simpleTextBlock('rabbit-counter', `${state.score1} / 10`, "yellow", FONT_SIZE_PERCENTAGE, 0.1, 0, Control.VERTICAL_ALIGNMENT_TOP);
         this.score.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
         this.score.leftInPixels = 0.04 * window.innerWidth;
         this.score.width = 0.25;

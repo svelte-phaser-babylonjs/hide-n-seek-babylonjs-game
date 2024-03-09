@@ -4,6 +4,7 @@ import { AnimationsType, GameState } from "../defs";
 export default abstract class {
     protected scene: Scene;
     protected mesh!: Mesh;
+    protected state: GameState;
     protected name: string;
     protected type: string;
     protected direction: Vector3 = new Vector3();
@@ -15,27 +16,38 @@ export default abstract class {
         moving_down: null,
     };
 
+    protected isReady: boolean;
+
     constructor(scene: Scene, state: GameState, name: string, type: string, defaultPosX: number, defaultPosY: number) {
         this.scene = scene;
+        this.state = state;
         this.name = name;
         this.type = type;
 
-        this.setupAnimations();
-        this.setupMesh(defaultPosX, defaultPosY);
+        this.isReady = false;
 
-        this.init();
+        this.configCharacter(defaultPosX, defaultPosY).then(async () => {
+            await this.init();
+            this.isReady = true;
 
-        this.scene.registerBeforeRender(() => {
-            if (state.isPaused) return;
+            this.scene.registerBeforeRender(() => {
+                if (state.isPaused) return;
 
-            this.updatePosition();
-            this.updateAnimations();
+                this.updatePosition();
+                this.updateAnimations();
+            });
         });
+
     }
 
     protected abstract init(): void;
 
     protected abstract setupAnimations(): Promise<void>;
+
+    protected async configCharacter(defaultPosX: number, defaultPosY: number): Promise<void> {
+        await this.setupMesh(defaultPosX, defaultPosY);
+        await this.setupAnimations();
+    }
 
     protected async setupMesh(defaultPosX: number, defaultPosY: number) {
         this.mesh = MeshBuilder.CreatePlane(`${this.name}-${this.type}-mesh`, {

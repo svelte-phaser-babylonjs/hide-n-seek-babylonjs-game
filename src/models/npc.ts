@@ -1,26 +1,50 @@
-import { Mesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from "babylonjs";
+import { ActionManager, Mesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from "babylonjs";
 import { animatedStandardMaterial } from "../helpers/sprite_generator";
-import { NPC_SPEED } from "../defs";
+import { AnimationsType, NPC_SPEED } from "../defs";
 import { Entity } from ".";
 
-type AnimationsType = {
-    watching: StandardMaterial | null,
-    moving_left: StandardMaterial | null,
-    moving_right: StandardMaterial | null,
-    moving_up: StandardMaterial | null,
-    moving_down: StandardMaterial | null,
-};
-
-export default class NpcController extends Entity {
+export default class extends Entity {
     // Character movement components
     private position!: Vector3;
     private aiFunction!: number;
 
-    protected init(): void {
-        this.setupAiGoals();
+    private isAlreadyColliding = true;
+
+    protected async init() {
+        this.isAlreadyColliding = false;
+        await this.setupAiGoals();
+
+        this.scene.onBeforeRenderObservable.add(() => {
+            if (this.isAlreadyColliding || !this.isReady) return;
+
+            const player1 = this.scene.getMeshByName("player1-character1-mesh");
+            const player2 = this.scene.getMeshByName("player2-character2-mesh");
+
+            const intersct1 = player1 ? this.mesh.intersectsMesh(player1) : false;
+            const intersct2 = player2 ? this.mesh.intersectsMesh(player2) : false;
+
+            if (intersct1 && !this.isAlreadyColliding) {
+                this.isAlreadyColliding = true;
+                this.mesh.dispose();
+                this.state.score1 += 1;
+            } else if (intersct2 && !this.isAlreadyColliding) {
+                this.isAlreadyColliding = true;
+                this.mesh.dispose();
+                this.state.score2 += 1;
+            }
+        });
     }
 
     private async setupAiGoals() {
+        const behaviorGoal = Math.floor(Math.random() * 2);
+
+        if (behaviorGoal) {
+            const randomPosX = Math.random() * (16 - (-16)) + (-16);
+            const randomPosY = Math.random() * (16 - (-16)) + (-16);
+
+            this.position = new Vector3(randomPosX, randomPosY, 0);
+        }
+
         this.aiFunction = setInterval(() => {
             const behaviorGoal = Math.floor(Math.random() * 2);
 
@@ -30,7 +54,7 @@ export default class NpcController extends Entity {
 
                 this.position = new Vector3(randomPosX, randomPosY, 0);
             }
-        }, 3000)
+        }, 7000)
     }
 
     protected async setupAnimations(): Promise<void> {

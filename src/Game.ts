@@ -15,6 +15,8 @@ export class Game {
     gameState: GameState = {
         isPaused: false,
         isExited: false,
+        score1: 0,
+        score2: 0,
     }
 
     // states
@@ -44,5 +46,12 @@ export class Game {
         this.engine.runRenderLoop(() => {
             this.scene!.render();
         });
+    }
+
+    resetGame() {
+        this.gameState.isPaused = false;
+        this.gameState.isExited = false;
+        this.gameState.score1 = 0;
+        this.gameState.score2 = 0;
     }
 }
