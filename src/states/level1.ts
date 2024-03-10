@@ -51,10 +51,10 @@ async function createLevel(this: Game) {
     const light = new DirectionalLight("light", new Vector3(0, 1, 1), levelScene!);
     light.intensity = 0.4;
 
-    this.characterController[0] = new Character(levelScene!, this.state, 1, 0, 0);
+    this.characterController1 = new Character(levelScene!, this.state, 1, 0, 0);
 
     if (this.state.isTwoPlayer) {
-        this.characterController[1] = new Character(levelScene!, this.state, 2, 2, 2);
+        this.characterController2 = new Character(levelScene!, this.state, 2, 2, 2);
     }
 }
 

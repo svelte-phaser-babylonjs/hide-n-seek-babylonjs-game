@@ -15,15 +15,9 @@ export default class {
 
     private keyMap: any = {};
 
-    constructor(scene: Scene, playerNumber: number) {
+    constructor(scene: Scene, keyMap: any) {
         this.scene = scene;
-
-        this.keyMap = {
-            up: playerNumber === 1 ? "w" : "ArrowUp",
-            down: playerNumber === 1 ? "s" : "ArrowDown",
-            left: playerNumber === 1 ? "a" : "ArrowLeft",
-            right: playerNumber === 1 ? "d" : "ArrowRight",
-        };
+        this.keyMap = keyMap;
 
         if (!this.scene.actionManager) {
             this.scene.actionManager = new ActionManager(scene);

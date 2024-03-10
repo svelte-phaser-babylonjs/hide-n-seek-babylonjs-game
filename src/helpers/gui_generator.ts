@@ -24,7 +24,8 @@ export async function simpleButton(
     fontSizePercentage: number,
     height: number,
     top: number,
-    verticalAlign: number
+    verticalAlign: number,
+    disableObservable: boolean = false
 ): Promise<Button> {
     const btn = Button.CreateSimpleButton(name, text);
 
@@ -39,13 +40,15 @@ export async function simpleButton(
 
     btn.verticalAlignment = verticalAlign;
 
-    btn.onPointerEnterObservable.add(() => {
-        btn.color = "yellow";
-    });
+    if (!disableObservable) {
+        btn.onPointerEnterObservable.add(() => {
+            btn.color = "yellow";
+        });
 
-    btn.onPointerOutObservable.add(() => {
-        btn.color = "white";
-    });
+        btn.onPointerOutObservable.add(() => {
+            btn.color = "white";
+        });
+    }
 
     return btn;
 }

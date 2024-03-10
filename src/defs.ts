@@ -26,4 +26,18 @@ export type GameState = {
     isTwoPlayer: boolean;
 
     soundManager: SoundManager | null;
+
+    input1: {
+        up: string;
+        down: string;
+        left: string;
+        right: string;
+    }
+
+    input2: {
+        up: string;
+        down: string;
+        left: string;
+        right: string;
+    }
 }

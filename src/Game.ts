@@ -10,7 +10,8 @@ export class Game {
 
     scene: Scene | null = null;
     environment: Environment | null = null;
-    characterController: Character[] = [];
+    characterController1: Character | null = null;
+    characterController2: Character | null = null;
 
 
     state: GameState = {
@@ -24,6 +25,20 @@ export class Game {
         isGameOver: false,
         isTwoPlayer: false,
         soundManager: null,
+
+        input1: {
+            up: "w",
+            down: "s",
+            left: "a",
+            right: "d",
+        },
+
+        input2: {
+            up: "ArrowUp",
+            down: "ArrowDown",
+            left: "ArrowLeft",
+            right: "ArrowRight",
+        },
     }
 
     // states
@@ -70,5 +85,8 @@ export class Game {
         this.state.destroyMesh = null;
         this.state.isGameOver = false;
         this.state.isTwoPlayer = false;
+
+        this.characterController1 = null;
+        this.characterController2 = null;
     }
 }
