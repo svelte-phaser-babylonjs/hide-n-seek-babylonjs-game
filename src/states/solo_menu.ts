@@ -116,9 +116,11 @@ async function createGUI(this: Game, scene: Scene) {
     });
     scrollViewer.addControl(level1Btn);
 
-    const backBtn = await simpleButton('back-btn', '> Back', FONT_SIZE_PERCENTAGE / 1.5, 0.1, (0.4 * window.innerHeight), Control.VERTICAL_ALIGNMENT_TOP);
+    const backBtn = await simpleButton('back-btn', '> Back', FONT_SIZE_PERCENTAGE / 1.5, 0.2, 0.3, Control.VERTICAL_ALIGNMENT_TOP);
     backBtn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
-    backBtn.leftInPixels = -80;
+    backBtn.zIndex = 9;
+    backBtn.height = 0.2;
+    backBtn.width = 0.3;
     backBtn.onPointerClickObservable.add(() => {
         this.state.soundManager!.playBackSound();
 

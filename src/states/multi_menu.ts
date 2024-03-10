@@ -86,7 +86,7 @@ async function createGUI(this: Game, scene: Scene) {
 
     await createModal.call(this, guiMenu);
 
-    const backBtn = await simpleButton('back-btn', '> Back', FONT_SIZE_PERCENTAGE / 1.5, 1, 0, Control.VERTICAL_ALIGNMENT_TOP);
+    const backBtn = await simpleButton('back-btn', '> Back', FONT_SIZE_PERCENTAGE / 1.5, 0.2, 0.3, Control.VERTICAL_ALIGNMENT_TOP);
     backBtn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
     backBtn.zIndex = 9;
     backBtn.height = 0.2;
