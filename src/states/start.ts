@@ -1,7 +1,7 @@
 import { Game } from "../Game";
 import { ArcRotateCamera, Scene, Vector3 } from "babylonjs";
 import { AdvancedDynamicTexture, Control, Image, Rectangle } from 'babylonjs-gui';
-import { simpleButton } from "../helpers/gui_generator";
+import { image, rectangle, simpleButton, simpleTextBlock } from "../helpers/gui_generator";
 import { FONT_SIZE_PERCENTAGE } from "../defs";
 
 const createCamera = function (scene: Scene) {
@@ -81,11 +81,39 @@ const createGUI = async function (this: Game, scene: Scene) {
     createTheAnimatedImage(guiMenu);
 
     const playBtn = await createPlayButton(guiMenu);
+
     playBtn.onPointerClickObservable.add(() => {
         this.state.soundManager!.playConfirmSound();
 
         // change the scene to main menu
         this.gotoMainMenu();
+    });
+
+    if (!this.isMobile) return;
+
+    const modal = await rectangle("modal", 1, 1, 0, "Black");
+    modal.alpha = 0.8;
+    guiMenu.addControl(modal);
+
+    modal.onPointerClickObservable.add(async () => {
+        modal.isVisible = false;
+    });
+
+    const mobileLandscapeImg = await image("landscape-mode", "assets/textures/UI/landscapeScreen.svg", 0.8, 0.8, 0, 0, Control.HORIZONTAL_ALIGNMENT_CENTER, Control.VERTICAL_ALIGNMENT_TOP);
+    modal.addControl(mobileLandscapeImg);
+
+    const textMobile = await simpleTextBlock("mobile-title-warn", "Please keep your device in landscape mode for best experience", "white", FONT_SIZE_PERCENTAGE * 0.75, 0.5, (window.innerHeight / 10), Control.VERTICAL_ALIGNMENT_BOTTOM);
+    textMobile.textWrapping = true;
+    textMobile.width = 0.8;
+    modal.addControl(textMobile);
+
+    window.addEventListener("resize", () => {
+        mobileLandscapeImg.top = 0;
+        mobileLandscapeImg.width = 0.8;
+
+        textMobile.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * FONT_SIZE_PERCENTAGE * 0.75;
+        textMobile.top = window.innerHeight / 10;
+        textMobile.width = 0.8;
     });
 }
 

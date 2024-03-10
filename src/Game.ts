@@ -13,6 +13,7 @@ export class Game {
     characterController1: Character | null = null;
     characterController2: Character | null = null;
 
+    isMobile: boolean;
 
     state: GameState = {
         isPaused: false,
@@ -53,7 +54,9 @@ export class Game {
     protected setupLevel1 = initLevel1;
     protected removeLevel1 = disposeLevel1;
 
-    constructor(readonly canvas: HTMLCanvasElement) {
+    constructor(readonly canvas: HTMLCanvasElement, isMobile: boolean) {
+        this.isMobile = isMobile;
+
         // create BabylonJS engine with anti-aliasing activated
         this.engine = new Engine(canvas, true)
 
