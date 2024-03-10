@@ -225,6 +225,7 @@ async function createGrid(this: Game, container: AdvancedDynamicTexture) {
     });
     gridInputs.addControl(player2Button_right, 2, 4);
 
+    // CHANGE KEY EVENTS
     const deviceSourceManager = await new DeviceSourceManager(this.engine);
     deviceSourceManager.onDeviceConnectedObservable.add(deviceSource => {
         if (deviceSource.deviceType === DeviceType.Keyboard) {
