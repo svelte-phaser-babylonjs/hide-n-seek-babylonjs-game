@@ -65,6 +65,8 @@ const createGUI = async function (this: Game, scene: Scene, message: string) {
     grid.addControl(backBtn, 3, 0);
 
     backBtn.onPointerClickObservable.add(() => {
+        this.state.soundManager!.playBackSound();
+
         // change the scene to main menu
         this.gotoMainMenu();
     });
