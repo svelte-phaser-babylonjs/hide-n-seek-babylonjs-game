@@ -7,6 +7,10 @@ export default class {
     private musicSoundTrack: SoundTrack;
     private sfxSoundTrack: SoundTrack;
 
+    private ambientSoundTrackVol: number = 100;
+    private musicSoundTrackVol: number = 100;
+    private sfxSoundTrackVol: number = 100;
+
     private startAmbient!: Sound;
     private mainMenuMusic!: Sound;
     private gameMusic!: Sound;
@@ -16,7 +20,6 @@ export default class {
     private resumeSound!: Sound;
     private collectSound!: Sound;
     private walkSound!: Sound;
-
 
     constructor() {
         this.assetsManager = new AssetsManager();
@@ -176,5 +179,29 @@ export default class {
             this.walkSound.setVolume(Math.random() * (1.1 - 0.9) + 0.9);
             this.walkSound.play();
         }
+    }
+
+    // Volume getter/setter
+    public getAmbientSoundTrackVol() {
+        return this.ambientSoundTrackVol;
+    }
+    public getMusicSoundTrackVol() {
+        return this.musicSoundTrackVol;
+    }
+    public getSfxSoundTrackVol() {
+        return this.sfxSoundTrackVol;
+    }
+
+    public setAmbientSoundTrackVol(volume: number) {
+        this.ambientSoundTrackVol = volume;
+        this.ambientSoundTrack.setVolume(volume / 100);
+    }
+    public setMusicSoundTrackVol(volume: number) {
+        this.musicSoundTrackVol = volume;
+        this.musicSoundTrack.setVolume(volume / 100);
+    }
+    public setSfxSoundTrackVol(volume: number) {
+        this.sfxSoundTrackVol = volume;
+        this.sfxSoundTrack.setVolume(volume / 100);
     }
 }

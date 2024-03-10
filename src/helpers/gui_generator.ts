@@ -1,4 +1,4 @@
-import { Button, Image, Rectangle, TextBlock } from "babylonjs-gui";
+import { Button, Grid, Image, ImageBasedSlider, Rectangle, StackPanel, TextBlock } from "babylonjs-gui";
 import { changeControlFont } from "./utils";
 
 export async function rectangle(
@@ -129,4 +129,39 @@ export async function simpleTextBlock(
     textBlock.verticalAlignment = verticalAlign;
 
     return textBlock;
+}
+
+export async function simpleSlider(
+    name: string,
+    text: string,
+    defaultVol: number,
+    grid: Grid,
+    row: number,
+    fontSizePercentage: number
+): Promise<ImageBasedSlider> {
+    const header = new TextBlock(name, text);
+    header.color = "white";
+    changeControlFont('14px bongkar', header);
+    header.fontSizeInPixels = ((window.innerHeight + window.innerWidth) / 2) * fontSizePercentage * 0.4;
+    header.textWrapping = true;
+    grid.addControl(header, row, 0);
+
+    const panel = new StackPanel();
+    panel.width = window.innerWidth / 2 + "px";
+    grid.addControl(panel, row, 1);
+
+    const slider = new ImageBasedSlider(`${name}-slider`);
+    slider.minimum = 0;
+    slider.maximum = 100;
+    slider.height = "50px";
+    slider.width = window.innerWidth / 2 + "px";
+    slider.backgroundImage = new Image(`${name}-slider-background`, "assets/textures/UI/backgroundImage.png");
+    slider.backgroundImage.stretch = Image.STRETCH_EXTEND;
+    slider.valueBarImage = new Image(`${name}-slider-valubar`, "assets/textures/UI/valueImage.png");
+    slider.valueBarImage.stretch - Image.STRETCH_EXTEND;
+    slider.value = defaultVol;
+
+    panel.addControl(slider);
+
+    return slider;
 }

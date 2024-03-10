@@ -125,7 +125,7 @@ async function createGUI(this: Game, scene: Scene) {
     optionsBtn.onPointerClickObservable.add(() => {
         this.state.soundManager!.playConfirmSound();
 
-
+        this.gotoOptionsMenu();
     });
     guiMenu.addControl(optionsBtn);
 
