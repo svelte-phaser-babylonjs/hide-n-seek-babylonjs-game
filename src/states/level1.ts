@@ -36,7 +36,7 @@ export async function level1(this: Game) {
         await initLevel1.call(this);
     }
 
-    await createLevel.call(this);
+    createLevel.call(this);
     await makeHud(this.gameState);
 
     await this.scene!.whenReadyAsync();

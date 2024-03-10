@@ -92,10 +92,9 @@ export default async function (this: Game) {
     this.scene!.detachControl();
     this.engine.displayLoadingUI();
 
-
     const sceneToLoad = new Scene(this.engine);
 
-    await createGUI.call(this, sceneToLoad);
+    createGUI.call(this, sceneToLoad);
 
     await this.scene!.whenReadyAsync();
 

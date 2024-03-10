@@ -115,26 +115,89 @@ export default class {
     }
 
     public playGameMusic() {
-        this.gameMusic.play();
-    }
-
-    public playAmbientMusic() {
-        this.startAmbient.play();
-    }
-
-    public playMainMenuMusic() {
-        this.mainMenuMusic.play();
+        this.startAmbient.stop();
+        this.mainMenuMusic.stop();
+        if (!this.gameMusic.isPlaying)
+            this.gameMusic.play();
     }
 
     public stopGameMusic() {
         this.gameMusic.stop();
     }
 
+    public playAmbientMusic() {
+        this.gameMusic.stop();
+        this.mainMenuMusic.stop();
+        if (!this.startAmbient.isPlaying)
+            this.startAmbient.play();
+    }
+
     public stopAmbientMusic() {
         this.startAmbient.stop();
     }
 
+    public playMainMenuMusic() {
+        this.gameMusic.stop();
+        this.startAmbient.stop();
+        if (!this.mainMenuMusic.isPlaying)
+            this.mainMenuMusic.play();
+    }
+
     public stopMainMenuMusic() {
         this.mainMenuMusic.stop();
+    }
+
+    // SFX Sounds
+
+    public playConfirmSound() {
+        this.confirmSound.play();
+    }
+
+    public stopConfirmSound() {
+        this.confirmSound.stop();
+    }
+
+    public playBackSound() {
+        this.backSound.play();
+    }
+
+    public stopBackSound() {
+        this.backSound.stop();
+    }
+
+    public playPauseSound() {
+        this.pauseSound.play();
+    }
+
+    public stopPauseSound() {
+        this.pauseSound.stop();
+    }
+
+    public playResumeSound() {
+        this.resumeSound.play();
+    }
+
+    public stopResumeSound() {
+        this.resumeSound.stop();
+    }
+
+    public playCollectSound() {
+        this.collectSound.play();
+    }
+
+    public stopCollectSound() {
+        this.collectSound.stop();
+    }
+
+    public playWalkSound() {
+        if (!this.walkSound.isPlaying) {
+            this.walkSound.setPlaybackRate(Math.random() * (1.1 - 0.9) + 0.9);
+            this.walkSound.setVolume(Math.random() * (1.1 - 0.9) + 0.9);
+            this.walkSound.play();
+        }
+    }
+
+    public stopWalkSound() {
+        this.walkSound.stop();
     }
 }

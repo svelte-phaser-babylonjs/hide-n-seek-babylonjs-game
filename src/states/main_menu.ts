@@ -133,7 +133,6 @@ async function createGUI(this: Game, scene: Scene) {
 }
 
 export default async function (this: Game) {
-    this.soundManager.stopAmbientMusic();
     this.soundManager.playMainMenuMusic();
     this.resetGame();
 
@@ -145,7 +144,7 @@ export default async function (this: Game) {
     const playerParentMesh = await createTheAnimatedBGAndPlayerMesh(sceneToLoad);
     createCameraAndLight(sceneToLoad, playerParentMesh);
 
-    await createGUI.call(this, sceneToLoad);
+    createGUI.call(this, sceneToLoad);
 
     await this.scene!.whenReadyAsync();
 
