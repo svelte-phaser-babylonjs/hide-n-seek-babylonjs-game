@@ -8,15 +8,15 @@ let levelScene: Scene | null = null;
 const winScore = 10;
 
 export async function initLevel1(this: Game) {
-    this.gameState.winScore = winScore;
+    this.state.winScore = winScore;
 
     levelScene = new Scene(this.engine);
-    this.environment = new Environment(levelScene, this.gameState, winScore);
+    this.environment = new Environment(levelScene, this.state, winScore);
 
     levelScene.registerBeforeRender(() => {
-        if (this.gameState.isExited) this.gotoMainMenu();
-        if (this.gameState.score1 === winScore || this.gameState.score2 === winScore || this.gameState.isGameOver) {
-            this.gameState.isGameOver = false;
+        if (this.state.isExited) this.gotoMainMenu();
+        if (this.state.score1 === winScore || this.state.score2 === winScore || this.state.isGameOver) {
+            this.state.isGameOver = false;
             this.goToGameFinished();
         }
     });
@@ -27,8 +27,8 @@ export async function disposeLevel1(this: Game) {
 }
 
 export async function level1(this: Game) {
-    this.soundManager.stopMainMenuMusic();
-    this.soundManager.playGameMusic();
+    this.state.soundManager!.playGameMusic();
+
     this.scene!.detachControl();
     this.engine.displayLoadingUI();
 
@@ -37,7 +37,7 @@ export async function level1(this: Game) {
     }
 
     createLevel.call(this);
-    await makeHud(this.gameState);
+    await makeHud(this.state);
 
     await this.scene!.whenReadyAsync();
 
@@ -51,10 +51,10 @@ async function createLevel(this: Game) {
     const light = new DirectionalLight("light", new Vector3(0, 1, 1), levelScene!);
     light.intensity = 0.4;
 
-    this.characterController[0] = new Character(levelScene!, this.gameState, 1, 0, 0);
+    this.characterController[0] = new Character(levelScene!, this.state, 1, 0, 0);
 
-    if (this.gameState.isTwoPlayer) {
-        this.characterController[1] = new Character(levelScene!, this.gameState, 2, 2, 2);
+    if (this.state.isTwoPlayer) {
+        this.characterController[1] = new Character(levelScene!, this.state, 2, 2, 2);
     }
 }
 

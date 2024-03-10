@@ -60,9 +60,11 @@ export default class {
         confirmSoundTask.onSuccess = task => {
             this.confirmSound = new Sound("confirmSound", task.data, undefined, undefined, {
                 autoplay: false,
-                loop: false
+                loop: false,
+                length: 1,
+                offset: 0,
             });
-            this.sfxSoundTrack.addSound(this.startAmbient);
+            this.sfxSoundTrack.addSound(this.confirmSound);
         }
 
         const backSoundTask = this.assetsManager.addBinaryFileTask("backSoundTask", "assets/sounds/sfx/029_Decline_09.wav");
@@ -71,7 +73,7 @@ export default class {
                 autoplay: false,
                 loop: false
             });
-            this.sfxSoundTrack.addSound(this.startAmbient);
+            this.sfxSoundTrack.addSound(this.backSound);
         }
 
         const pauseSoundTask = this.assetsManager.addBinaryFileTask("pauseSoundTask", "assets/sounds/sfx/092_Pause_04.wav");
@@ -80,7 +82,7 @@ export default class {
                 autoplay: false,
                 loop: false
             });
-            this.sfxSoundTrack.addSound(this.startAmbient);
+            this.sfxSoundTrack.addSound(this.pauseSound);
         }
 
         const resumeSoundTask = this.assetsManager.addBinaryFileTask("resumeSoundTask", "assets/sounds/sfx/098_Unpause_04.wav");
@@ -89,7 +91,7 @@ export default class {
                 autoplay: false,
                 loop: false
             });
-            this.sfxSoundTrack.addSound(this.startAmbient);
+            this.sfxSoundTrack.addSound(this.resumeSound);
         }
 
         const collectSoundTask = this.assetsManager.addBinaryFileTask("collectSoundTask", "assets/sounds/sfx/coin.wav");
@@ -98,7 +100,7 @@ export default class {
                 autoplay: false,
                 loop: false
             });
-            this.sfxSoundTrack.addSound(this.startAmbient);
+            this.sfxSoundTrack.addSound(this.collectSound);
         }
 
         const walkSoundTask = this.assetsManager.addBinaryFileTask("walkSoundTask", "assets/sounds/sfx/sfx_step_grass_l.flac");
@@ -107,9 +109,8 @@ export default class {
                 autoplay: false,
                 loop: false
             });
-            this.sfxSoundTrack.addSound(this.startAmbient);
+            this.sfxSoundTrack.addSound(this.walkSound);
         }
-
 
         await this.assetsManager.loadAsync();
     }
@@ -153,40 +154,20 @@ export default class {
         this.confirmSound.play();
     }
 
-    public stopConfirmSound() {
-        this.confirmSound.stop();
-    }
-
     public playBackSound() {
         this.backSound.play();
-    }
-
-    public stopBackSound() {
-        this.backSound.stop();
     }
 
     public playPauseSound() {
         this.pauseSound.play();
     }
 
-    public stopPauseSound() {
-        this.pauseSound.stop();
-    }
-
     public playResumeSound() {
         this.resumeSound.play();
     }
 
-    public stopResumeSound() {
-        this.resumeSound.stop();
-    }
-
     public playCollectSound() {
         this.collectSound.play();
-    }
-
-    public stopCollectSound() {
-        this.collectSound.stop();
     }
 
     public playWalkSound() {
@@ -195,9 +176,5 @@ export default class {
             this.walkSound.setVolume(Math.random() * (1.1 - 0.9) + 0.9);
             this.walkSound.play();
         }
-    }
-
-    public stopWalkSound() {
-        this.walkSound.stop();
     }
 }

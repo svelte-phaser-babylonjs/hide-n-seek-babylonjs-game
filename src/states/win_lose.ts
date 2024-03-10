@@ -51,12 +51,12 @@ const createGUI = async function (this: Game, scene: Scene, message: string) {
     text.textWrapping = true;
     grid.addControl(text, 0, 0);
 
-    const score = await simpleTextBlock("message-score-node", `Player1 Score: ${this.gameState.score1}`, "white", FONT_SIZE_PERCENTAGE * 1.5, 0.5, 0, Control.VERTICAL_ALIGNMENT_CENTER);
+    const score = await simpleTextBlock("message-score-node", `Player1 Score: ${this.state.score1}`, "white", FONT_SIZE_PERCENTAGE * 1.5, 0.5, 0, Control.VERTICAL_ALIGNMENT_CENTER);
     score.textWrapping = true;
     grid.addControl(score, 1, 0);
 
-    if (this.gameState.isTwoPlayer) {
-        const score = await simpleTextBlock("message-score2-node", `Player2 Score: ${this.gameState.score2}`, "white", FONT_SIZE_PERCENTAGE * 1.5, 0.5, 0, Control.VERTICAL_ALIGNMENT_CENTER);
+    if (this.state.isTwoPlayer) {
+        const score = await simpleTextBlock("message-score2-node", `Player2 Score: ${this.state.score2}`, "white", FONT_SIZE_PERCENTAGE * 1.5, 0.5, 0, Control.VERTICAL_ALIGNMENT_CENTER);
         score.textWrapping = true;
         grid.addControl(score, 2, 0);
     }
@@ -73,20 +73,20 @@ const createGUI = async function (this: Game, scene: Scene, message: string) {
 export default async function (this: Game) {
     let message: string = "Game Over";
 
-    if (!this.gameState.isTwoPlayer) {
-        if (this.gameState.score1 === this.gameState.winScore) {
+    if (!this.state.isTwoPlayer) {
+        if (this.state.score1 === this.state.winScore) {
             message = "You Won! Congratulations!"
         }
     } else {
-        if (this.gameState.score1 > this.gameState.score2) {
+        if (this.state.score1 > this.state.score2) {
             message = "Player1 Won!"
-        } else if (this.gameState.score2 > this.gameState.score1) {
+        } else if (this.state.score2 > this.state.score1) {
             message = "Player2 Won!"
         } else {
             message = "Game is Tie!"
         }
 
-        if (this.gameState.score1 === this.gameState.winScore || this.gameState.score2 === this.gameState.winScore) {
+        if (this.state.score1 === this.state.winScore || this.state.score2 === this.state.winScore) {
             message += " Caught All!"
         }
     }

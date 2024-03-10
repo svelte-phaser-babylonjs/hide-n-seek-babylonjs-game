@@ -82,22 +82,26 @@ const createGUI = async function (this: Game, scene: Scene) {
 
     const playBtn = await createPlayButton(guiMenu);
     playBtn.onPointerClickObservable.add(() => {
+        this.state.soundManager!.playConfirmSound();
+
         // change the scene to main menu
         this.gotoMainMenu();
     });
 }
 
 export default async function (this: Game) {
-    this.soundManager.playAmbientMusic();
+    await this.state.soundManager!.loadSounds();
+
     this.scene!.detachControl();
     this.engine.displayLoadingUI();
 
     const sceneToLoad = new Scene(this.engine);
 
-    createGUI.call(this, sceneToLoad);
+    await createGUI.call(this, sceneToLoad);
 
     await this.scene!.whenReadyAsync();
 
+    this.state.soundManager!.playAmbientMusic();
     sceneToLoad.attachControl();
     this.engine.hideLoadingUI();
     this.scene!.dispose();

@@ -12,9 +12,8 @@ export class Game {
     environment: Environment | null = null;
     characterController: Character[] = [];
 
-    soundManager: SoundManager;
 
-    gameState: GameState = {
+    state: GameState = {
         isPaused: false,
         isExited: false,
         score1: 0,
@@ -24,6 +23,7 @@ export class Game {
         destroyMesh: null,
         isGameOver: false,
         isTwoPlayer: false,
+        soundManager: null,
     }
 
     // states
@@ -48,11 +48,10 @@ export class Game {
         // create the scene
         this.scene = new Scene(this.engine);
 
-        this.soundManager = new SoundManager();
+        this.state.soundManager = new SoundManager();
     }
 
     async run() {
-        await this.soundManager.loadSounds();
         await this.gotoStart();
 
         // running render loop
@@ -62,13 +61,13 @@ export class Game {
     }
 
     resetGame() {
-        this.gameState.isPaused = false;
-        this.gameState.isExited = false;
-        this.gameState.score1 = 0;
-        this.gameState.score2 = 0;
-        this.gameState.winScore = 0;
-        this.gameState.destroyMesh = null;
-        this.gameState.isGameOver = false;
-        this.gameState.isTwoPlayer = false;
+        this.state.isPaused = false;
+        this.state.isExited = false;
+        this.state.score1 = 0;
+        this.state.score2 = 0;
+        this.state.winScore = 0;
+        this.state.destroyMesh = null;
+        this.state.isGameOver = false;
+        this.state.isTwoPlayer = false;
     }
 }

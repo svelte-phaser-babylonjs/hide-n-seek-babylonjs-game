@@ -61,9 +61,11 @@ async function createModal(this: Game, container: AdvancedDynamicTexture) {
     levelMenuBtn.zIndex = 5;
     levelMenuBtn.height = 0.2;
     levelMenuBtn.width = 0.3;
-    levelMenuBtn.onPointerClickObservable.add(async () => {
-        this.gameState.isTwoPlayer = true;
-        await this.gotoSoloMenu();
+    levelMenuBtn.onPointerClickObservable.add(() => {
+        this.state.soundManager!.playConfirmSound();
+
+        this.state.isTwoPlayer = true;
+        this.gotoSoloMenu();
     });
     container.addControl(levelMenuBtn);
 
@@ -90,6 +92,8 @@ async function createGUI(this: Game, scene: Scene) {
     backBtn.height = 0.2;
     backBtn.width = 0.3;
     backBtn.onPointerClickObservable.add(() => {
+        this.state.soundManager!.playBackSound();
+
         this.gotoMainMenu();
     });
     guiMenu.addControl(backBtn);

@@ -24,4 +24,6 @@ export type GameState = {
 
     isGameOver: boolean;
     isTwoPlayer: boolean;
+
+    soundManager: SoundManager | null;
 }

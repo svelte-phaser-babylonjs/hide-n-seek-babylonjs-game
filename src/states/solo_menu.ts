@@ -40,6 +40,7 @@ async function createModal(this: Game, container: AdvancedDynamicTexture) {
     modal.onPointerClickObservable.add(async () => {
         containerGrid.isVisible = false;
         modal.isVisible = false;
+        this.resetGame();
 
         await this.removeLevel1();
     });
@@ -70,6 +71,8 @@ async function createModal(this: Game, container: AdvancedDynamicTexture) {
 
     const startBtn = await simpleButton("start-btn", "Start", FONT_SIZE_PERCENTAGE, 1, 1, Control.VERTICAL_ALIGNMENT_CENTER);
     startBtn.onPointerClickObservable.add(async () => {
+        this.state.soundManager!.playConfirmSound();
+
         // launch level 1
         await this.gotoLevel1();
     });
@@ -105,9 +108,10 @@ async function createGUI(this: Game, scene: Scene) {
 
     const level1Btn = await imageButton("level1-btn", "The Rabbit Invasion", "assets/textures/UI/level1.svg", FONT_SIZE_PERCENTAGE / 2, 0.3, 0, Control.HORIZONTAL_ALIGNMENT_LEFT);
     level1Btn.onPointerClickObservable.add(async () => {
+        this.state.soundManager!.playConfirmSound();
+
         modal.isVisible = true;
         containerGrid.isVisible = true;
-
         await this.setupLevel1();
     });
     scrollViewer.addControl(level1Btn);
@@ -116,6 +120,8 @@ async function createGUI(this: Game, scene: Scene) {
     backBtn.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
     backBtn.leftInPixels = -80;
     backBtn.onPointerClickObservable.add(() => {
+        this.state.soundManager!.playBackSound();
+
         this.gotoMainMenu();
     });
     guiMenu.addControl(backBtn);

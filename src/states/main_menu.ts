@@ -107,18 +107,24 @@ async function createGUI(this: Game, scene: Scene) {
 
     const soloBtn = await simpleButton('solo-btn', 'Solo', FONT_SIZE_PERCENTAGE, 0.12, -((window.innerHeight / 20) * 6), Control.VERTICAL_ALIGNMENT_BOTTOM);
     soloBtn.onPointerClickObservable.add(() => {
+        this.state.soundManager!.playConfirmSound();
+
         this.gotoSoloMenu();
     });
     guiMenu.addControl(soloBtn);
 
     const multiBtn = await simpleButton('multi-btn', 'Multiplayer', FONT_SIZE_PERCENTAGE, 0.12, -((window.innerHeight / 20) * 3.5), Control.VERTICAL_ALIGNMENT_BOTTOM);
     multiBtn.onPointerClickObservable.add(() => {
+        this.state.soundManager!.playConfirmSound();
+
         this.gotoMultiMenu();
     });
     guiMenu.addControl(multiBtn);
 
     const optionsBtn = await simpleButton('opt-btn', 'Options', FONT_SIZE_PERCENTAGE, 0.12, -(window.innerHeight / 20), Control.VERTICAL_ALIGNMENT_BOTTOM);
     optionsBtn.onPointerClickObservable.add(() => {
+        this.state.soundManager!.playConfirmSound();
+
 
     });
     guiMenu.addControl(optionsBtn);
@@ -133,7 +139,7 @@ async function createGUI(this: Game, scene: Scene) {
 }
 
 export default async function (this: Game) {
-    this.soundManager.playMainMenuMusic();
+    this.state.soundManager!.playMainMenuMusic();
     this.resetGame();
 
     this.scene!.detachControl();
@@ -144,7 +150,7 @@ export default async function (this: Game) {
     const playerParentMesh = await createTheAnimatedBGAndPlayerMesh(sceneToLoad);
     createCameraAndLight(sceneToLoad, playerParentMesh);
 
-    createGUI.call(this, sceneToLoad);
+    await createGUI.call(this, sceneToLoad);
 
     await this.scene!.whenReadyAsync();
 

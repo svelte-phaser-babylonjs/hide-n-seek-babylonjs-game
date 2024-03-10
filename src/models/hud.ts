@@ -29,6 +29,7 @@ export default class {
 
         this.destroyMesh = async (mesh: Mesh, playerNumber: number) => {
             await scene.whenReadyAsync();
+            this.state.soundManager!.playCollectSound();
 
             const canvas = document.getElementById("renderCanvas");
             const ratio = playerNumber === 1 ? -0.025 : 0.25;
@@ -145,6 +146,7 @@ export default class {
         this.exitBtn.isVisible = state.isPaused;
         this.exitBtn.zIndex = 5;
         this.exitBtn.onPointerClickObservable.add(() => {
+            state.soundManager!.playBackSound();
             state.isExited = true;
         });
         this.texture.addControl(this.exitBtn);
@@ -188,6 +190,11 @@ export default class {
 
     private changePause(state: GameState) {
         state.isPaused = !state.isPaused;
+        if (state.isPaused) {
+            state.soundManager!.playPauseSound();
+        } else {
+            state.soundManager!.playResumeSound();
+        }
         this.resumeBtn.isVisible = state.isPaused;
         this.exitBtn.isVisible = state.isPaused;
         this.modal.isVisible = state.isPaused;
