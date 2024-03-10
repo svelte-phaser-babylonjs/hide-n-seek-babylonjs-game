@@ -84,7 +84,7 @@ export default abstract class {
             this.mesh.material = this.animations.moving_left;
         }
 
-        if (this.direction.x !== 0 || this.direction.y !== 0) {
+        if (this.name.includes('player') && (this.direction.x !== 0 || this.direction.y !== 0)) {
             this.state.soundManager!.playWalkSound();
         }
     }
