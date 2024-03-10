@@ -111,6 +111,8 @@ async function createGrid(this: Game, container: AdvancedDynamicTexture) {
         this.state.soundManager!.setSfxSoundTrackVol(value);
     });
 
+    if (this.state.isMobile) return;
+
     const inputsTitle = await simpleTextBlock("input-title", "Inputs", "white", FONT_SIZE_PERCENTAGE * 0.4, 0.5, 0, Control.VERTICAL_ALIGNMENT_CENTER);
     inputsTitle.textWrapping = true;
     inputsTitle.zIndex = 5;

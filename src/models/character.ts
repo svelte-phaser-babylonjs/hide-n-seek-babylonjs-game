@@ -69,7 +69,7 @@ export default class extends Entity {
 
         if (!this.input) {
             await this.scene.whenReadyAsync();
-            this.input = new InputController(this.scene, this.playerNumber === 1 ? this.state.input1 : this.state.input2);
+            this.input = new InputController(this.scene, this.state, this.playerNumber);
         }
 
         const dt = this.scene.getEngine().getDeltaTime() / 1000;

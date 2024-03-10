@@ -89,7 +89,7 @@ const createGUI = async function (this: Game, scene: Scene) {
         this.gotoMainMenu();
     });
 
-    if (!this.isMobile) return;
+    if (!this.state.isMobile) return;
 
     const modal = await rectangle("modal", 1, 1, 0, "Black");
     modal.alpha = 0.8;

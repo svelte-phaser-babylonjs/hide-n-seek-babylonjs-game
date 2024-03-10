@@ -21,6 +21,7 @@ export type GameState = {
     score2: number;
     winScore: number;
     destroyMesh: ((mesh: Mesh, playerNumber: number) => void) | null;
+    setupJoystick: ((isTwoPlayer: boolean, playerNumber: number) => Promise<number[]>) | null;
 
     isGameOver: boolean;
     isTwoPlayer: boolean;
@@ -40,4 +41,6 @@ export type GameState = {
         left: string;
         right: string;
     }
+
+    isMobile: boolean;
 }

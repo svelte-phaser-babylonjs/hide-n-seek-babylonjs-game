@@ -1,6 +1,6 @@
 import { Camera, FreeCamera, KeyboardEventTypes, Mesh, Scene, Vector3 } from "babylonjs";
 import { AdvancedDynamicTexture, Button, Control, Ellipse, Rectangle, TextBlock } from "babylonjs-gui";
-import { image, rectangle, simpleButton, simpleTextBlock } from "../helpers/gui_generator";
+import { image, makePuck, makeThumbContainer, rectangle, simpleButton, simpleTextBlock } from "../helpers/gui_generator";
 import { CATCH_FEEDBACK_SPEED, FONT_SIZE_PERCENTAGE, GameState } from "../defs";
 
 export default class {
@@ -17,6 +17,7 @@ export default class {
     private state: GameState;
 
     public destroyMesh: ((mesh: Mesh, playerNumber: number) => void) | null;
+    public setupJoystick: ((isTwoPlayer: boolean, playerNumber: number) => Promise<number[]>) | null;
 
     // Timer components
     private counter = 60;
@@ -67,6 +68,57 @@ export default class {
                     }
                 }, dt);
             }, 250);
+        }
+
+        this.setupJoystick = async (isTwoPlayer: boolean, playerNumber: number) => {
+            const sideOffset = window.innerWidth;
+
+            let jsPos = [0, 0];
+            let bottomOffset = -(window.innerHeight / 10);
+            let sideJSOffset = playerNumber === 1 ? (sideOffset * 0.1) : (sideOffset * 0.7);
+
+            const puck = await makePuck();
+            let puckFloatLeft: number;
+            let puckFloatTop: number;
+            let puckIsDown: boolean;
+
+            const thumbContainer = await makeThumbContainer(sideJSOffset, bottomOffset);
+            thumbContainer.addControl(puck);
+
+            thumbContainer.onPointerDownObservable.add((coordinates: { x: number, y: number }) => {
+                puck.isVisible = true;
+
+                puckFloatLeft = coordinates.x - (thumbContainer._currentMeasure.width * 0.5) - sideJSOffset;
+                puck.left = puckFloatLeft;
+
+                puckFloatTop = document.getElementById("renderCanvas")!.offsetHeight - coordinates.y - (thumbContainer._currentMeasure.height * 0.5) + bottomOffset;
+                puck.top = puckFloatTop * -1;
+                puckIsDown = true;
+                thumbContainer.alpha = 0.9;
+            });
+
+            thumbContainer.onPointerUpObservable.add(() => {
+                jsPos[0] = 0;
+                jsPos[1] = 0;
+                puckIsDown = false;
+                puck.isVisible = false;
+                thumbContainer.alpha = 0.4;
+            });
+
+            thumbContainer.onPointerMoveObservable.add((coordinates: { x: number, y: number }) => {
+                if (puckIsDown) {
+                    jsPos[0] = coordinates.x - (thumbContainer._currentMeasure.width * 0.5) - sideJSOffset;
+                    jsPos[1] = document.getElementById("renderCanvas")!.offsetHeight - coordinates.y - (thumbContainer._currentMeasure.height * 0.5) + bottomOffset;
+                    puckFloatLeft = jsPos[0];
+                    puckFloatTop = jsPos[1] * -1;
+                    puck.left = puckFloatLeft;
+                    puck.top = puckFloatTop;
+                }
+            });
+
+            this.texture.addControl(thumbContainer);
+
+            return jsPos;
         }
 
         this.scene.registerBeforeRender(() => {

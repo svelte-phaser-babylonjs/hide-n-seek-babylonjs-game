@@ -1,4 +1,4 @@
-import { Button, Grid, Image, ImageBasedSlider, Rectangle, StackPanel, TextBlock } from "babylonjs-gui";
+import { Button, Control, Ellipse, Grid, Image, ImageBasedSlider, Rectangle, StackPanel, TextBlock } from "babylonjs-gui";
 import { changeControlFont } from "./utils";
 
 export async function rectangle(
@@ -167,4 +167,60 @@ export async function simpleSlider(
     panel.addControl(slider);
 
     return slider;
+}
+
+export async function makeThumbArea(
+    name: string,
+    thickness: number,
+    color: string,
+    background: string
+): Promise<Ellipse> {
+    const ellipse = new Ellipse();
+
+    ellipse.name = name;
+    ellipse.thickness = thickness;
+    ellipse.color = color;
+    ellipse.background = background;
+    ellipse.paddingBottom = "0px";
+    ellipse.paddingTop = "0px";
+    ellipse.paddingLeft = "0px";
+    ellipse.paddingRight = "0px";
+
+    return ellipse;
+}
+
+export async function makePuck(): Promise<Ellipse> {
+    const puck = await makeThumbArea("left-puck", 0, "blue", "blue");
+    puck.height = "60px";
+    puck.width = "60px";
+    puck.isPointerBlocker = true;
+    puck.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;
+    puck.verticalAlignment = Control.VERTICAL_ALIGNMENT_CENTER;
+
+    return puck;
+}
+
+export async function makeThumbContainer(
+    sideOffset: number,
+    bottom: number
+): Promise<Ellipse> {
+    const thumbContainer = await makeThumbArea("left-thumb", 2, "blue", "");
+    thumbContainer.height = "200px";
+    thumbContainer.width = "200px";
+    thumbContainer.isPointerBlocker = true;
+    thumbContainer.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
+    thumbContainer.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
+    thumbContainer.alpha = 0.4;
+    thumbContainer.left = sideOffset;
+    thumbContainer.top = bottom;
+
+    const innerContainer = await makeThumbArea("left-inner-container", 4, "blue", "");
+    innerContainer.height = "80px";
+    innerContainer.width = "80px";
+    innerContainer.isPointerBlocker = true;
+    innerContainer.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_CENTER;
+    innerContainer.verticalAlignment = Control.VERTICAL_ALIGNMENT_CENTER;
+    thumbContainer.addControl(innerContainer);
+
+    return thumbContainer;
 }

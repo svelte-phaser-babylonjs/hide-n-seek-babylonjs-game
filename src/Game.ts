@@ -13,7 +13,6 @@ export class Game {
     characterController1: Character | null = null;
     characterController2: Character | null = null;
 
-    isMobile: boolean;
 
     state: GameState = {
         isPaused: false,
@@ -23,6 +22,7 @@ export class Game {
         winScore: 0,
 
         destroyMesh: null,
+        setupJoystick: null,
         isGameOver: false,
         isTwoPlayer: false,
         soundManager: null,
@@ -40,6 +40,7 @@ export class Game {
             left: "ArrowLeft",
             right: "ArrowRight",
         },
+        isMobile: false,
     }
 
     // states
@@ -55,7 +56,7 @@ export class Game {
     protected removeLevel1 = disposeLevel1;
 
     constructor(readonly canvas: HTMLCanvasElement, isMobile: boolean) {
-        this.isMobile = isMobile;
+        this.state.isMobile = isMobile;
 
         // create BabylonJS engine with anti-aliasing activated
         this.engine = new Engine(canvas, true)
@@ -86,6 +87,7 @@ export class Game {
         this.state.score2 = 0;
         this.state.winScore = 0;
         this.state.destroyMesh = null;
+        this.state.setupJoystick = null;
         this.state.isGameOver = false;
         this.state.isTwoPlayer = false;
 
