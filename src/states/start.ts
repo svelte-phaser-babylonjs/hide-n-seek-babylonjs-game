@@ -88,8 +88,10 @@ const createGUI = async function (this: Game, scene: Scene) {
 }
 
 export default async function (this: Game) {
+    this.soundManager.playAmbientMusic();
     this.scene!.detachControl();
     this.engine.displayLoadingUI();
+
 
     const sceneToLoad = new Scene(this.engine);
 

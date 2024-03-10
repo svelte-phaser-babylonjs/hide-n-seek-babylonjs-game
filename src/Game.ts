@@ -2,7 +2,7 @@ import 'babylonjs-loaders';
 import { gameFinished, mainMenu, multiMenu, soloMenu, start } from './states';
 import { Engine, Scene } from 'babylonjs';
 import { disposeLevel1, initLevel1, level1 } from './states/level1';
-import { Character, Environment } from './models';
+import { Character, Environment, SoundManager } from './models';
 import { GameState } from './defs';
 
 export class Game {
@@ -11,6 +11,8 @@ export class Game {
     scene: Scene | null = null;
     environment: Environment | null = null;
     characterController: Character[] = [];
+
+    soundManager: SoundManager;
 
     gameState: GameState = {
         isPaused: false,
@@ -35,7 +37,6 @@ export class Game {
     protected setupLevel1 = initLevel1;
     protected removeLevel1 = disposeLevel1;
 
-
     constructor(readonly canvas: HTMLCanvasElement) {
         // create BabylonJS engine with anti-aliasing activated
         this.engine = new Engine(canvas, true)
@@ -46,9 +47,12 @@ export class Game {
 
         // create the scene
         this.scene = new Scene(this.engine);
+
+        this.soundManager = new SoundManager();
     }
 
     async run() {
+        await this.soundManager.loadSounds();
         await this.gotoStart();
 
         // running render loop

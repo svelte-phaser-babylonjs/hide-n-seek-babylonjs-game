@@ -133,6 +133,8 @@ async function createGUI(this: Game, scene: Scene) {
 }
 
 export default async function (this: Game) {
+    this.soundManager.stopAmbientMusic();
+    this.soundManager.playMainMenuMusic();
     this.resetGame();
 
     this.scene!.detachControl();
