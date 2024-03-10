@@ -27,6 +27,8 @@ export async function disposeLevel1(this: Game) {
 }
 
 export async function level1(this: Game) {
+    this.soundManager.stopMainMenuMusic();
+    this.soundManager.playGameMusic();
     this.scene!.detachControl();
     this.engine.displayLoadingUI();
 

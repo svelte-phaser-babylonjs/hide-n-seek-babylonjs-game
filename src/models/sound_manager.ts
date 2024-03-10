@@ -10,6 +10,13 @@ export default class {
     private startAmbient!: Sound;
     private mainMenuMusic!: Sound;
     private gameMusic!: Sound;
+    private confirmSound!: Sound;
+    private backSound!: Sound;
+    private pauseSound!: Sound;
+    private resumeSound!: Sound;
+    private collectSound!: Sound;
+    private walkSound!: Sound;
+
 
     constructor() {
         this.assetsManager = new AssetsManager();
@@ -20,8 +27,8 @@ export default class {
     }
 
     public async loadSounds() {
-        const taskStart = this.assetsManager.addBinaryFileTask("startAmbientTask", "assets/sounds/ambient/Forest_Ambience.mp3");
-        taskStart.onSuccess = task => {
+        const startSoundTask = this.assetsManager.addBinaryFileTask("startAmbientTask", "assets/sounds/ambient/Forest_Ambience.mp3");
+        startSoundTask.onSuccess = task => {
             this.startAmbient = new Sound("startAmbient", task.data, undefined, undefined, {
                 autoplay: false,
                 loop: true
@@ -29,8 +36,8 @@ export default class {
             this.ambientSoundTrack.addSound(this.startAmbient);
         }
 
-        const taskMainMenu = this.assetsManager.addBinaryFileTask("mainMenuMusicTaska", "assets/sounds/musics/041415calmbgm.wav");
-        taskMainMenu.onSuccess = task => {
+        const mainMenuMusicTask = this.assetsManager.addBinaryFileTask("mainMenuMusicTask", "assets/sounds/musics/041415calmbgm.wav");
+        mainMenuMusicTask.onSuccess = task => {
             this.mainMenuMusic = new Sound("mainMenuMusic", task.data, undefined, undefined, {
                 autoplay: false,
                 loop: true
@@ -38,14 +45,72 @@ export default class {
             this.musicSoundTrack.addSound(this.mainMenuMusic);
         }
 
-        const taskGameMusic = this.assetsManager.addBinaryFileTask("gameMusicTask", "assets/sounds/musics/spring-day.mp3");
-        taskGameMusic.onSuccess = task => {
+        const gameMusicTask = this.assetsManager.addBinaryFileTask("gameMusicTask", "assets/sounds/musics/spring-day.mp3");
+        gameMusicTask.onSuccess = task => {
             this.gameMusic = new Sound("gameMusic", task.data, undefined, undefined, {
                 autoplay: false,
                 loop: true
             });
             this.musicSoundTrack.addSound(this.gameMusic);
         }
+
+        // SFX Sounds
+
+        const confirmSoundTask = this.assetsManager.addBinaryFileTask("confirmSoundTask", "assets/sounds/sfx/Menu Soundpack 3.wav");
+        confirmSoundTask.onSuccess = task => {
+            this.confirmSound = new Sound("confirmSound", task.data, undefined, undefined, {
+                autoplay: false,
+                loop: false
+            });
+            this.sfxSoundTrack.addSound(this.startAmbient);
+        }
+
+        const backSoundTask = this.assetsManager.addBinaryFileTask("backSoundTask", "assets/sounds/sfx/029_Decline_09.wav");
+        backSoundTask.onSuccess = task => {
+            this.backSound = new Sound("backSound", task.data, undefined, undefined, {
+                autoplay: false,
+                loop: false
+            });
+            this.sfxSoundTrack.addSound(this.startAmbient);
+        }
+
+        const pauseSoundTask = this.assetsManager.addBinaryFileTask("pauseSoundTask", "assets/sounds/sfx/092_Pause_04.wav");
+        pauseSoundTask.onSuccess = task => {
+            this.pauseSound = new Sound("pauseSound", task.data, undefined, undefined, {
+                autoplay: false,
+                loop: false
+            });
+            this.sfxSoundTrack.addSound(this.startAmbient);
+        }
+
+        const resumeSoundTask = this.assetsManager.addBinaryFileTask("resumeSoundTask", "assets/sounds/sfx/098_Unpause_04.wav");
+        resumeSoundTask.onSuccess = task => {
+            this.resumeSound = new Sound("resumeSound", task.data, undefined, undefined, {
+                autoplay: false,
+                loop: false
+            });
+            this.sfxSoundTrack.addSound(this.startAmbient);
+        }
+
+        const collectSoundTask = this.assetsManager.addBinaryFileTask("collectSoundTask", "assets/sounds/sfx/coin.wav");
+        collectSoundTask.onSuccess = task => {
+            this.collectSound = new Sound("collectSound", task.data, undefined, undefined, {
+                autoplay: false,
+                loop: false
+            });
+            this.sfxSoundTrack.addSound(this.startAmbient);
+        }
+
+        const walkSoundTask = this.assetsManager.addBinaryFileTask("walkSoundTask", "assets/sounds/sfx/sfx_step_grass_l.flac");
+        walkSoundTask.onSuccess = task => {
+            this.walkSound = new Sound("walkSound", task.data, undefined, undefined, {
+                autoplay: false,
+                loop: false
+            });
+            this.sfxSoundTrack.addSound(this.startAmbient);
+        }
+
+
         await this.assetsManager.loadAsync();
     }
 
